@@ -1,20 +1,6 @@
 {
     "repositories": [
-        {
-            "name": "Portfolio",
-            "url": "https://github.com/MindDevelopment/portfolio.git",
-            "local_path": "C:/Users/Administrator/Desktop/Github/portfolio-mod"
-        },
-        {
-            "name": "MindOfDevelopment-discord",
-            "url": "https://github.com/MindDevelopment/MindOfDevelopment-discord.git",
-            "local_path": "C:/Users/Administrator/Desktop/Github/MindOfDevelopment-discord"
-        },
-        {
-            "name": "github-auto-pull",
-            "url": "https://github.com/MindDevelopment/github-auto-pull.git",
-            "local_path": "C:/Users/Administrator/Desktop/Github/github-auto-pull"
-        }
+        
     ],
     "sync_interval": 10,
     "discord_webhook": "https://discordapp.com/api/webhooks/1319398156726833172/8YQb9qYqmmbjtKTPQPIpV9FqFidXxgnvCWm7vNfE6u8biwsfOmvRwTFP9qQjO6p0qMKb",
