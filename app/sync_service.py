@@ -3,7 +3,7 @@ import time
 import json
 import logging
 from controllers.repo_sync import sync_repositories
-from controllers.notifier import send_notification
+from controllers.notifier import send_notification, send_notifications  # Let op de toevoeging van send_notifications
 from utils.auto_restart import monitor_script
 
 # Laad configuratie
@@ -23,15 +23,8 @@ def main():
                 # Synchroniseer repositories
                 updates = sync_repositories(config['repositories'])
                 if updates:
-                    # Succesvolle updates
-                    send_notification(config['discord_webhook'], updates, "success")
-                
-                # Check repository bereikbaarheid
-                for repo in config['repositories']:
-                    if not os.path.exists(repo['local_path']):
-                        warning_msg = f"Waarschuwing: Repository {repo['name']} niet bereikbaar"
-                        logging.warning(warning_msg)
-                        send_notification(config['discord_webhook'], warning_msg, "warning")
+                    # Gebruik send_notifications voor repository updates
+                    send_notifications(config['discord_webhook'], updates)
                 
                 # Wacht voor de volgende synchronisatie
                 time.sleep(config['sync_interval'])
@@ -40,7 +33,7 @@ def main():
                 error_msg = f"Fout tijdens synchronisatie: {str(e)}"
                 logging.error(error_msg)
                 send_notification(config['discord_webhook'], error_msg, "error")
-                time.sleep(30)  # Wacht kort voor nieuwe poging
+                time.sleep(30)
                 
     except Exception as e:
         fatal_error = f"Kritieke fout in synchronisatie service: {str(e)}"
