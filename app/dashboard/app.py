@@ -4,7 +4,7 @@ import os
 from functools import wraps
 
 app = Flask(__name__)
-app.secret_key = os.urandom(24)  # Voor sessie beheer
+app.secret_key = os.urandom(24)
 CONFIG_FILE = 'app/config/config.json'
 
 def load_config():
@@ -14,7 +14,9 @@ def load_config():
 def save_config(config):
     with open(CONFIG_FILE, 'w') as f:
         json.dump(config, f, indent=4)
-    # Herstart sync service
+    restart_sync_service()
+
+def restart_sync_service():
     os.system("taskkill /f /im python.exe /fi \"windowtitle eq sync_service\"")
     os.system("start cmd /k \"python app/sync_service.py\"")
 
@@ -34,7 +36,7 @@ def login():
             request.form['password'] == config['admin']['password']):
             session['logged_in'] = True
             return redirect(url_for('admin'))
-        return "Invalid credentials"
+        return redirect(url_for('login', error=True))
     return render_template('login.html')
 
 @app.route('/logout')
@@ -43,10 +45,8 @@ def logout():
     return redirect(url_for('login'))
 
 @app.route("/")
-@admin_required
 def index():
-    config = load_config()
-    return render_template('index.html', repositories=config['repositories'])
+    return redirect(url_for('admin'))
 
 @app.route("/admin")
 @admin_required
@@ -56,12 +56,15 @@ def admin():
                          repositories=config['repositories'],
                          webhook=config['discord_webhook'])
 
-@app.route("/api/repo", methods=["POST", "PUT", "DELETE"])
+@app.route("/api/repositories", methods=["GET", "POST", "PUT", "DELETE"])
 @admin_required
-def manage_repo():
+def manage_repositories():
     config = load_config()
     
-    if request.method == "POST":
+    if request.method == "GET":
+        return jsonify(config['repositories'])
+    
+    elif request.method == "POST":
         new_repo = request.json
         config['repositories'].append(new_repo)
     
