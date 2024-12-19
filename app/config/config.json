@@ -8,5 +8,9 @@
     ],
     "sync_interval": 10,
     "discord_webhook": "https://discordapp.com/api/webhooks/1319398156726833172/8YQb9qYqmmbjtKTPQPIpV9FqFidXxgnvCWm7vNfE6u8biwsfOmvRwTFP9qQjO6p0qMKb",
-    "log_file": "logs/sync.log"
+    "log_file": "logs/sync.log",
+    "admin": {
+        "username": "admin",
+        "password": "admin123"
+    }
 }

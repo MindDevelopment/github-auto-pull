@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <h1>Admin Dashboard</h1>
+    <a href="/logout" class="logout-btn">Logout</a>
+
+    <section class="webhook-section">
+        <h2>Discord Webhook</h2>
+        <form id="webhook-form">
+            <input type="text" id="webhook-url" value="{{ webhook }}" required>
+            <button type="submit">Update Webhook</button>
+        </form>
+    </section>
+
+    <section class="repositories-section">
+        <h2>Repositories</h2>
+        <table id="repo-table">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>URL</th>
+                    <th>Local Path</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for repo in repositories %}
+                <tr>
+                    <td>{{ repo.name }}</td>
+                    <td>{{ repo.url }}</td>
+                    <td>{{ repo.local_path }}</td>
+                    <td>
+                        <button onclick="editRepo('{{ repo.name }}')">Edit</button>
+                        <button onclick="deleteRepo('{{ repo.name }}')">Delete</button>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <button onclick="showAddRepoForm()">Add Repository</button>
+    </section>
+
+    <script>
+        // Webhook update
+        document.getElementById('webhook-form').onsubmit = async (e) => {
+            e.preventDefault();
+            const webhook = document.getElementById('webhook-url').value;
+            await fetch('/api/webhook', {
+                method: 'PUT',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({webhook})
+            });
+            alert('Webhook updated');
+        };
+
+        // Repository management
+        async function deleteRepo(name) {
+            if (confirm('Are you sure?')) {
+                await fetch('/api/repo', {
+                    method: 'DELETE',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({name})
+                });
+                location.reload();
+            }
+        }
+
+        function showAddRepoForm() {
+            // Implementeer een modal of form voor het toevoegen van repositories
+        }
+
+        function editRepo(name) {
+            // Implementeer een modal of form voor het bewerken van repositories
+        }
+    </script>
+</body>
+</html>

@@ -101,3 +101,129 @@ footer a {
 footer a:hover {
     text-decoration: underline;
 }
+
+/* Admin Dashboard specifieke stijlen */
+.logout-btn {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    padding: 8px 15px;
+    background: #dc3545;
+    color: white;
+    text-decoration: none;
+    border-radius: 3px;
+}
+
+.logout-btn:hover {
+    background: #c82333;
+}
+
+/* Webhook sectie */
+.webhook-section {
+    margin: 20px auto;
+    max-width: 800px;
+    padding: 20px;
+    background: #1e1e1e;
+    border-radius: 5px;
+}
+
+#webhook-form input {
+    width: 80%;
+    margin-right: 10px;
+}
+
+/* Repository tabel */
+.repositories-section {
+    margin: 20px auto;
+    max-width: 800px;
+    padding: 20px;
+    background: #1e1e1e;
+    border-radius: 5px;
+}
+
+#repo-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    color: #ffffff;
+}
+
+#repo-table th,
+#repo-table td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #333;
+}
+
+#repo-table th {
+    background-color: #2c2c2c;
+    font-weight: bold;
+}
+
+#repo-table tr:hover {
+    background-color: #2c2c2c;
+}
+
+/* Knoppen in de tabel */
+#repo-table button {
+    padding: 5px 10px;
+    margin: 0 5px;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+}
+
+#repo-table button:first-child {
+    background: #007bff;
+    color: white;
+}
+
+#repo-table button:last-child {
+    background: #dc3545;
+    color: white;
+}
+
+#repo-table button:hover {
+    opacity: 0.9;
+}
+
+/* Login pagina */
+.login-container {
+    max-width: 400px;
+    margin: 100px auto;
+    padding: 20px;
+    background: #1e1e1e;
+    border-radius: 5px;
+    text-align: center;
+}
+
+.login-container input {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #333;
+    border-radius: 3px;
+    background: #2c2c2c;
+    color: white;
+}
+
+.login-container button {
+    width: 100%;
+    padding: 10px;
+    margin-top: 20px;
+    background: #00adb5;
+    color: white;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+}
+
+.login-container button:hover {
+    background: #00baba;
+}
+
+/* Sectie headers */
+section h2 {
+    color: #00adb5;
+    margin-bottom: 20px;
+}
