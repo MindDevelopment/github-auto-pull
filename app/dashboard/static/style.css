@@ -1,263 +1,136 @@
-/* Reset en root variabelen */
-:root {
-    --primary-color: #00adb5;
-    --primary-hover: #00baba;
-    --danger-color: #dc3545;
-    --danger-hover: #c82333;
-    --bg-dark: #121212;
-    --bg-card: #1e1e1e;
-    --bg-input: #2c2c2c;
-    --border-color: #333333;
-    --text-primary: #ffffff;
-    --text-secondary: #aaaaaa;
-    --shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-    --border-radius: 5px;
-}
-
-* {
+/* Behoud originele dark theme styling */
+body {
+    font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
-    box-sizing: border-box;
-}
-
-/* Algemene instellingen */
-body {
-    font-family: 'Segoe UI', Arial, sans-serif;
-    background-color: var(--bg-dark);
-    color: var(--text-primary);
+    background-color: #121212;
+    color: #ffffff;
     line-height: 1.6;
-    min-height: 100vh;
-    position: relative;
-    padding-bottom: 60px; /* Ruimte voor footer */
-}
-
-/* Typography */
-h1, h2, h3 {
-    margin: 1rem 0;
-    text-align: center;
 }
 
 h1 {
-    color: var(--primary-color);
-    font-size: 2.5rem;
-    margin-top: 2rem;
+    text-align: center;
+    margin-top: 20px;
+    color: #00adb5;
 }
 
 h2 {
-    color: var(--text-primary);
-    font-size: 2rem;
+    text-align: center;
+    margin-top: 10px;
+    color: #eeeeee;
 }
 
-/* Container styles */
-.container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 20px;
+/* Originele form styling */
+form {
+    margin: 20px auto;
+    max-width: 600px;
+    padding: 15px;
+    background: #1e1e1e;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
-/* Card styling */
-.card {
-    background: var(--bg-card);
-    border-radius: var(--border-radius);
-    box-shadow: var(--shadow);
-    padding: 20px;
-    margin: 20px 0;
+form input {
+    width: calc(100% - 20px);
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #555555;
+    border-radius: 3px;
+    background: #333333;
+    color: #ffffff;
 }
 
-/* Form styling */
-.form-group {
-    margin-bottom: 1rem;
-}
-
-form input, 
-form textarea, 
-form select {
-    width: 100%;
-    padding: 12px;
-    margin: 8px 0;
-    border: 1px solid var(--border-color);
-    border-radius: var(--border-radius);
-    background: var(--bg-input);
-    color: var(--text-primary);
-    transition: all 0.3s ease;
-}
-
-form input:focus, 
-form textarea:focus, 
-form select:focus {
-    border-color: var(--primary-color);
+form input:focus {
+    border-color: #00adb5;
     outline: none;
-    box-shadow: 0 0 0 2px rgba(0, 173, 181, 0.2);
 }
 
-/* Button styling */
-.btn {
-    display: inline-block;
-    padding: 10px 20px;
+form button {
+    width: 100%;
+    padding: 10px;
     border: none;
-    border-radius: var(--border-radius);
+    border-radius: 3px;
+    background-color: #00adb5;
+    color: #ffffff;
+    font-size: 16px;
     cursor: pointer;
-    font-size: 1rem;
-    transition: all 0.3s ease;
 }
 
-.btn-primary {
-    background: var(--primary-color);
-    color: white;
+form button:hover {
+    background-color: #00baba;
 }
 
-.btn-primary:hover {
-    background: var(--primary-hover);
-}
-
-.btn-danger {
-    background: var(--danger-color);
-    color: white;
-}
-
-.btn-danger:hover {
-    background: var(--danger-hover);
-}
-
-/* Admin Dashboard */
-.admin-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 1rem;
-    background: var(--bg-card);
-    margin-bottom: 2rem;
-}
-
+/* Nieuwe admin specifieke styles */
 .logout-btn {
     position: absolute;
     top: 20px;
     right: 20px;
     padding: 8px 15px;
-    background: var(--danger-color);
+    background: #dc3545;
     color: white;
     text-decoration: none;
-    border-radius: var(--border-radius);
-    transition: background-color 0.3s ease;
+    border-radius: 3px;
 }
 
 .logout-btn:hover {
-    background: var(--danger-hover);
+    background: #c82333;
 }
 
-/* Repository Table */
-.table-container {
-    overflow-x: auto;
-    margin: 20px 0;
-}
-
+/* Repository tabel */
 #repo-table {
     width: 100%;
+    max-width: 800px;
+    margin: 20px auto;
     border-collapse: collapse;
-    background: var(--bg-card);
-    border-radius: var(--border-radius);
-    overflow: hidden;
+    background: #1e1e1e;
+    border-radius: 5px;
 }
 
 #repo-table th,
 #repo-table td {
-    padding: 15px;
+    padding: 12px;
     text-align: left;
-    border-bottom: 1px solid var(--border-color);
+    border-bottom: 1px solid #333;
 }
 
 #repo-table th {
-    background: var(--bg-input);
-    font-weight: 600;
-    text-transform: uppercase;
-    font-size: 0.9rem;
+    background-color: #2c2c2c;
+    color: #00adb5;
 }
 
 #repo-table tr:hover {
-    background: var(--bg-input);
+    background-color: #2c2c2c;
 }
 
-#repo-table td:last-child {
-    text-align: right;
-}
-
-/* Action Buttons */
-.action-btn {
-    padding: 6px 12px;
-    margin: 0 4px;
-    border: none;
-    border-radius: var(--border-radius);
-    cursor: pointer;
-    transition: all 0.3s ease;
-}
-
-.edit-btn {
-    background: var(--primary-color);
-    color: white;
-}
-
-.delete-btn {
-    background: var(--danger-color);
-    color: white;
-}
-
-/* Modal styling */
-.modal {
-    display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.7);
-    z-index: 1000;
-}
-
-.modal-content {
-    position: relative;
-    background: var(--bg-card);
-    margin: 10% auto;
+/* Login container */
+.login-container {
+    max-width: 400px;
+    margin: 100px auto;
     padding: 20px;
-    max-width: 500px;
-    border-radius: var(--border-radius);
+    background: #1e1e1e;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
-.close-modal {
-    position: absolute;
-    right: 15px;
-    top: 15px;
-    font-size: 1.5rem;
+.login-container h2 {
+    color: #00adb5;
+}
+
+/* Actie knoppen */
+.action-button {
+    padding: 5px 10px;
+    margin: 0 5px;
+    border: none;
+    border-radius: 3px;
     cursor: pointer;
-    color: var(--text-secondary);
+    background: #00adb5;
+    color: white;
 }
 
-/* Responsive Design */
-@media (max-width: 768px) {
-    .container {
-        padding: 0 10px;
-    }
-
-    #repo-table {
-        font-size: 0.9rem;
-    }
-
-    .action-btn {
-        padding: 4px 8px;
-        font-size: 0.8rem;
-    }
-
-    .modal-content {
-        margin: 20% auto;
-        width: 90%;
-    }
+.action-button.delete {
+    background: #dc3545;
 }
 
-/* Animations */
-@keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
-}
-
-.fade-in {
-    animation: fadeIn 0.3s ease-in;
+.action-button:hover {
+    opacity: 0.9;
 }
