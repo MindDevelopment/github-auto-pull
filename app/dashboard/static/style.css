@@ -102,6 +102,8 @@ footer a:hover {
     text-decoration: underline;
 }
 
+/* Bestaande CSS behouden en nieuwe stijlen toevoegen */
+
 /* Admin Dashboard specifieke stijlen */
 .logout-btn {
     position: absolute;
@@ -227,3 +229,4 @@ section h2 {
     color: #00adb5;
     margin-bottom: 20px;
 }
+
