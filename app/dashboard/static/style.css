@@ -1,0 +1,103 @@
+/* Algemene instellingen */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #121212;
+    color: #ffffff;
+    line-height: 1.6;
+}
+
+/* Header stijl */
+h1 {
+    text-align: center;
+    margin-top: 20px;
+    color: #00adb5;
+}
+
+h2 {
+    text-align: center;
+    margin-top: 10px;
+    color: #eeeeee;
+}
+
+/* Lijststijl */
+ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 20px auto;
+    max-width: 600px;
+}
+
+ul li {
+    background: #1e1e1e;
+    margin: 10px 0;
+    padding: 10px 15px;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+ul li:hover {
+    background-color: #333333;
+}
+
+/* Formulier stijl */
+form {
+    margin: 20px auto;
+    max-width: 600px;
+    padding: 15px;
+    background: #1e1e1e;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+form input {
+    width: calc(100% - 20px);
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #555555;
+    border-radius: 3px;
+    background: #333333;
+    color: #ffffff;
+}
+
+form input:focus {
+    border-color: #00adb5;
+    outline: none;
+}
+
+form button {
+    width: 100%;
+    padding: 10px;
+    border: none;
+    border-radius: 3px;
+    background-color: #00adb5;
+    color: #ffffff;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+form button:hover {
+    background-color: #00baba;
+}
+
+/* Footer stijl */
+footer {
+    text-align: center;
+    margin-top: 20px;
+    padding: 10px;
+    background: #1e1e1e;
+    color: #aaaaaa;
+}
+
+footer a {
+    color: #00adb5;
+    text-decoration: none;
+}
+
+footer a:hover {
+    text-decoration: underline;
+}
