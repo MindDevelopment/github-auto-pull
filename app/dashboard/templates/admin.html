@@ -36,16 +36,16 @@
                     <td>{{ repo.name }}</td>
                     <td>{{ repo.url }}</td>
                     <td>{{ repo.local_path }}</td>
-                    <td>
-                        <button onclick="editRepo('{{ repo.name }}')">Edit</button>
-                        <button onclick="deleteRepo('{{ repo.name }}')">Delete</button>
+                    <td class="repo-actions">
+                        <button class="btn-edit" onclick="editRepo('{{ repo.name }}')">Edit</button>
+                        <button class="btn-delete" onclick="deleteRepo('{{ repo.name }}')">Delete</button>
                     </td>
                 </tr>
                 {% endfor %}
             </tbody>
         </table>
-
-        <button onclick="showAddRepoForm()">Add Repository</button>
+    
+        <button class="btn-add-repo" onclick="showAddRepoForm()">Add Repository</button>
     </section>
 
     <script src="/static/dashboard.js"></script>
