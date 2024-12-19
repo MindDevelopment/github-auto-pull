@@ -1,3 +1,4 @@
+<!-- app/dashboard/templates/admin.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -47,38 +48,6 @@
         <button onclick="showAddRepoForm()">Add Repository</button>
     </section>
 
-    <script>
-        // Webhook update
-        document.getElementById('webhook-form').onsubmit = async (e) => {
-            e.preventDefault();
-            const webhook = document.getElementById('webhook-url').value;
-            await fetch('/api/webhook', {
-                method: 'PUT',
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({webhook})
-            });
-            alert('Webhook updated');
-        };
-
-        // Repository management
-        async function deleteRepo(name) {
-            if (confirm('Are you sure?')) {
-                await fetch('/api/repo', {
-                    method: 'DELETE',
-                    headers: {'Content-Type': 'application/json'},
-                    body: JSON.stringify({name})
-                });
-                location.reload();
-            }
-        }
-
-        function showAddRepoForm() {
-            // Implementeer een modal of form voor het toevoegen van repositories
-        }
-
-        function editRepo(name) {
-            // Implementeer een modal of form voor het bewerken van repositories
-        }
-    </script>
+    <script src="/static/dashboard.js"></script>
 </body>
 </html>
