@@ -2,7 +2,7 @@ import requests
 import logging
 from datetime import datetime
 
-def create_embed(title, repository, files, status="success"):
+def create_embed(title, repository, action, files, status="success"):
     colors = {
         "success": 3066993,  # Groen
         "warning": 16776960,  # Geel
@@ -21,6 +21,11 @@ def create_embed(title, repository, files, status="success"):
                 "name": "📦 Repository",
                 "value": repository,
                 "inline": False
+            },
+            {
+                "name": "🔄 Actie",
+                "value": action,
+                "inline": False
             }
         ],
         "footer": {
@@ -31,7 +36,7 @@ def create_embed(title, repository, files, status="success"):
     if files:
         embed["fields"].append({
             "name": "📄 Bestanden",
-            "value": "\n".join(files) if isinstance(files, list) else files,
+            "value": "\n".join([f.split(": ", 1)[1] for f in files]) if isinstance(files, list) else files,
             "inline": False
         })
     
@@ -45,8 +50,10 @@ def send_notifications(webhook_url, updates):
         added_files = []
         modified_files = []
         deleted_files = []
+        repo_name = None
         
         for update in updates:
+            repo_name = update.split(":")[0].strip()  # Haal repository naam uit de update
             if "new file" in update.lower():
                 added_files.append(update)
             elif "deleted" in update.lower():
@@ -58,7 +65,8 @@ def send_notifications(webhook_url, updates):
         if added_files:
             embeds.append(create_embed(
                 "✨ Nieuwe Bestanden Toegevoegd",
-                added_files[0].split(":")[0],  # Repository naam
+                repo_name,
+                "Toegevoegd",
                 added_files,
                 "added"
             ))
@@ -66,7 +74,8 @@ def send_notifications(webhook_url, updates):
         if modified_files:
             embeds.append(create_embed(
                 "📝 Bestanden Gewijzigd",
-                modified_files[0].split(":")[0],  # Repository naam
+                repo_name,
+                "Geüpdatet",
                 modified_files,
                 "modified"
             ))
@@ -74,10 +83,12 @@ def send_notifications(webhook_url, updates):
         if deleted_files:
             embeds.append(create_embed(
                 "🗑️ Bestanden Verwijderd",
-                deleted_files[0].split(":")[0],  # Repository naam
+                repo_name,
+                "Verwijderd",
                 deleted_files,
                 "deleted"
             ))
+
         
         if embeds:
             payload = {"embeds": embeds}
