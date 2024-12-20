@@ -8,7 +8,7 @@ from datetime import datetime
 from controllers.repo_sync import sync_repositories
 from controllers.notifier import send_notification, send_notifications
 
-CONFIG_FILE = 'app/config/config.json'
+CONFIG_FILE = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'config', 'config.json')
 
 # Configureer logging met meer details
 def setup_logging(log_file):
@@ -34,6 +34,15 @@ def setup_logging(log_file):
     console_handler = logging.StreamHandler(sys.stdout)
     console_handler.setLevel(logging.INFO)
     logging.getLogger().addHandler(console_handler)
+
+def save_config(config):
+    try:
+        os.makedirs(os.path.dirname(CONFIG_FILE), exist_ok=True)
+        with open(CONFIG_FILE, 'w') as f:
+            json.dump(config, f, indent=4)
+        restart_sync_service()
+    except Exception as e:
+        raise ConfigError(f"Fout bij opslaan configuratie: {str(e)}")
 
 def check_process_running(process_name):
     """Check of een proces al draait"""
@@ -64,15 +73,6 @@ def restart_sync_service():
     except subprocess.CalledProcessError as e:
         logging.error(f"Error during service restart: {e}")
         return False
-
-def save_config(config):
-    try:
-        os.makedirs(os.path.dirname(CONFIG_FILE), exist_ok=True)
-        with open(CONFIG_FILE, 'w') as f:
-            json.dump(config, f, indent=4)
-        restart_sync_service()
-    except Exception as e:
-        raise ConfigError(f"Fout bij opslaan configuratie: {str(e)}")
 
 def update_sync_status(repo_name, status, error=None):
     with open(CONFIG_FILE) as f:
@@ -115,7 +115,7 @@ def update_sync_status(repo_name, status, error=None):
 def main():
     try:
         # Laad configuratie
-        with open('app/config/config.json') as f:
+        with open(CONFIG_FILE) as f:
             config = json.load(f)
 
         # Setup logging
@@ -178,8 +178,7 @@ def main():
                 raise
             except Exception as e:
                 error_msg = f"Error during sync #{sync_count}: {str(e)}"
-                logging.error(error_msg, exc_info=True)
-                send_notification(config['discord_webhook'], error_msg, "error")
+                logging.error(error_msg,config['discord_webhook'], error_msg, "error")
                 time.sleep(30)  # Wacht voor nieuwe poging
                 
     except KeyboardInterrupt:
