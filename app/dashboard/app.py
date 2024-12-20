@@ -59,6 +59,7 @@ def config_error(error):
     return jsonify({"error": str(error)}), HTTPStatus.INTERNAL_SERVER_ERROR
 
 # Base routes
+# Base routes
 @app.route('/')
 def index():
     try:
@@ -88,8 +89,8 @@ def logout():
     session.pop('logged_in', None)
     return redirect(url_for('login'))
 
-@app.route("/admin")
-@admin_required
+@app.route('/admin')
+@admin_required  # Alleen admin pagina vereist login
 def admin():
     try:
         config = load_config()
