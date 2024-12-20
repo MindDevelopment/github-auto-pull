@@ -41,12 +41,13 @@ def setup_logging(log_file):
         console_handler.setLevel(logging.INFO)
         logging.getLogger().addHandler(console_handler)
 
-def save_config(config):
+def save_config(config, restart=False):
     try:
         os.makedirs(os.path.dirname(CONFIG_FILE), exist_ok=True)
         with open(CONFIG_FILE, 'w') as f:
             json.dump(config, f, indent=4)
-        restart_sync_service()
+        if restart:
+            restart_sync_service()
     except Exception as e:
         raise Exception(f"Fout bij opslaan configuratie: {str(e)}")
 
@@ -111,7 +112,8 @@ def update_sync_status(repo_name, status, error=None):
     else:
         repo_stats['successful_syncs'] += 1
 
-    save_config(config)
+    save_config(config, restart=False)
+
 
 def main():
     try:
