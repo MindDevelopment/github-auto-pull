@@ -1,4 +1,4 @@
-/* app/dashboard/static/style.css */
+/* Base styles */
 body {
     font-family: Arial, sans-serif;
     margin: 0;
@@ -8,6 +8,7 @@ body {
     line-height: 1.6;
 }
 
+/* Navigation */
 .admin-nav {
     display: flex;
     justify-content: space-between;
@@ -29,12 +30,31 @@ body {
     font-size: 1.8rem;
 }
 
-.admin-container {
+.nav-links {
+    display: flex;
+    gap: 1rem;
+}
+
+.nav-link {
+    color: #ffffff;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.nav-link:hover {
+    color: #00adb5;
+}
+
+/* Container styles */
+.container, .admin-container, .dashboard-container {
     max-width: 1200px;
     margin: 2rem auto;
     padding: 0 1rem;
 }
 
+/* Card styles */
 .card {
     background: #1e1e1e;
     border-radius: 8px;
@@ -63,6 +83,7 @@ body {
     padding: 1rem;
 }
 
+/* Form styles */
 .input-group {
     display: flex;
     gap: 10px;
@@ -83,6 +104,7 @@ body {
     outline: none;
 }
 
+/* Button styles */
 button {
     padding: 0.8rem 1.5rem;
     background: #00adb5;
@@ -104,6 +126,7 @@ button:hover {
     margin-left: auto;
 }
 
+/* Table styles */
 .table-container {
     overflow-x: auto;
 }
@@ -125,6 +148,7 @@ th {
     color: #00adb5;
 }
 
+/* Action buttons */
 .action-buttons {
     display: flex;
     gap: 5px;
@@ -138,17 +162,32 @@ th {
     background: #dc3545;
 }
 
-/* Login pagina */
-.login-body {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    min-height: 100vh;
+/* Status badges */
+.status-badge {
+    padding: 0.3rem 0.8rem;
+    border-radius: 15px;
+    font-size: 0.9rem;
 }
 
+.status-badge.active {
+    background: #28a745;
+    color: white;
+}
+
+.status-badge.error {
+    background: #dc3545;
+    color: white;
+}
+
+.status-badge.warning {
+    background: #ffc107;
+    color: black;
+}
+
+/* Login styles */
 .login-container {
-    width: 100%;
     max-width: 400px;
+    margin: 4rem auto;
     padding: 2rem;
     background: #1e1e1e;
     border-radius: 8px;
@@ -162,11 +201,6 @@ th {
 
 .login-header i {
     font-size: 3rem;
-    color: #00adb5;
-}
-
-.login-header h1 {
-    margin-top: 1rem;
     color: #00adb5;
 }
 
@@ -191,7 +225,34 @@ th {
     gap: 10px;
 }
 
-/* Modal styling */
+/* Dashboard specific styles */
+.status-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.status-card {
+    background: #1e1e1e;
+    padding: 1.5rem;
+    border-radius: 8px;
+    text-align: center;
+}
+
+.repo-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+}
+
+.repo-card {
+    background: #1e1e1e;
+    border-radius: 8px;
+    padding: 1.5rem;
+}
+
+/* Modal styles */
 .modal {
     position: fixed;
     top: 0;
@@ -207,93 +268,22 @@ th {
 
 .modal-content {
     background: #1e1e1e;
-    padding: 25px;
+    padding: 2rem;
     border-radius: 8px;
     width: 90%;
     max-width: 600px;
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
 }
 
-.modal-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 20px;
-    padding-bottom: 15px;
-    border-bottom: 1px solid #333;
-}
-
-.modal-header h2 {
-    color: #00adb5;
-    margin: 0;
-}
-
-.modal .close {
-    color: #666;
-    font-size: 24px;
-    cursor: pointer;
-    transition: color 0.3s;
-}
-
-.modal .close:hover {
-    color: #fff;
-}
-
-.modal form {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-}
-
-.modal input {
-    background: #2c2c2c;
-    border: 1px solid #333;
-    padding: 12px;
-    border-radius: 4px;
-    color: #fff;
-    font-size: 14px;
-    transition: border-color 0.3s;
-}
-
-.modal input:focus {
-    border-color: #00adb5;
-    outline: none;
-}
-
-.modal button[type="submit"] {
-    background: #00adb5;
-    color: white;
-    padding: 12px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 14px;
-    font-weight: bold;
-    transition: background 0.3s;
-}
-
-.modal button[type="submit"]:hover {
-    background: #00baba;
-}
-
-/* Notification styling */
+/* Notification styles */
 .notification {
     position: fixed;
     top: 20px;
     right: 20px;
-    padding: 15px 25px;
+    padding: 1rem 2rem;
     border-radius: 4px;
     color: white;
     z-index: 1001;
     animation: slideIn 0.3s ease-out;
-}
-
-.notification.success {
-    background: #28a745;
-}
-
-.notification.error {
-    background: #dc3545;
 }
 
 @keyframes slideIn {
@@ -303,133 +293,4 @@ th {
     to {
         transform: translateX(0);
     }
-}
-/* Dashboard container styling */
-.dashboard-container {
-    max-width: 1200px;
-    margin: 2rem auto;
-    padding: 0 1rem;
-}
-
-/* Status section styling */
-.status-section {
-    margin-bottom: 2rem;
-}
-
-.status-section h2 {
-    color: #00adb5;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    margin-bottom: 1.5rem;
-}
-
-.status-cards {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 1.5rem;
-    margin-bottom: 2rem;
-}
-
-.status-card {
-    background: #1e1e1e;
-    padding: 1.5rem;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-}
-
-.status-card i {
-    font-size: 2rem;
-    color: #00adb5;
-    margin-bottom: 1rem;
-}
-
-.status-card h3 {
-    color: #ffffff;
-    margin: 0.5rem 0;
-}
-
-/* Repository overview styling */
-.repo-overview-section {
-    margin-top: 2rem;
-}
-
-.repo-overview-section h2 {
-    color: #00adb5;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    margin-bottom: 1.5rem;
-}
-
-.repo-cards {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 1.5rem;
-}
-
-.repo-card {
-    background: #1e1e1e;
-    border-radius: 8px;
-    padding: 1.5rem;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-}
-
-.repo-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 1rem;
-}
-
-.repo-header h3 {
-    color: #ffffff;
-    margin: 0;
-}
-
-.repo-details {
-    margin-bottom: 1rem;
-}
-
-.repo-details p {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    margin: 0.5rem 0;
-    color: #aaa;
-}
-
-.repo-details i {
-    color: #00adb5;
-}
-
-.repo-stats {
-    border-top: 1px solid #333;
-    padding-top: 1rem;
-}
-
-.stat {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    color: #aaa;
-}
-
-.stat i {
-    color: #00adb5;
-}
-
-.status-badge {
-    padding: 0.3rem 0.8rem;
-    border-radius: 15px;
-    font-size: 0.9rem;
-}
-
-.status-badge.active {
-    background: #28a745;
-    color: white;
 }
