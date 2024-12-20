@@ -4,3 +4,5 @@ app/controllers/__pycache__/repo_sync.cpython-312.pyc
 logs/sync.log
 /app/config
 logs/
+/app/config
+/logs
