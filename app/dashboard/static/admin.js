@@ -116,21 +116,24 @@ document.addEventListener('DOMContentLoaded', function() {
         showModal('Add Repository', `
             <form id="add-repo-form" class="repository-form">
                 <div class="form-group">
-                    <label>Repository Name</label>
+                    <label><i class="fas fa-tag"></i> Repository Name</label>
                     <input type="text" name="name" placeholder="Repository Name" required>
                 </div>
                 <div class="form-group">
-                    <label>Repository URL</label>
+                    <label><i class="fas fa-link"></i> Repository URL</label>
                     <input type="text" name="url" placeholder="Repository URL" required>
                 </div>
                 <div class="form-group">
-                    <label>Local Path</label>
+                    <label><i class="fas fa-folder"></i> Local Path</label>
                     <input type="text" name="local_path" placeholder="Local Path" required>
                 </div>
-                <button type="submit">Add Repository</button>
+                <button type="submit">
+                    <i class="fas fa-plus"></i>
+                    Add Repository
+                </button>
             </form>
         `);
-
+    
         document.getElementById('add-repo-form').onsubmit = async (e) => {
             e.preventDefault();
             const formData = new FormData(e.target);
