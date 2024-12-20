@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Dashboard</title>
+    <title>Admin Dashboard - GitHub Auto Pull</title>
     <link rel="stylesheet" href="/static/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
@@ -28,7 +28,7 @@
             <div class="card-content">
                 <form id="webhook-form">
                     <div class="input-group">
-                        <input type="text" id="webhook-url" value="{{ webhook }}" required>
+                        <input type="text" id="webhook-url" value="{{ webhook }}" placeholder="Discord Webhook URL" required>
                         <button type="submit">
                             <i class="fas fa-save"></i> Update
                         </button>
@@ -58,15 +58,15 @@
                         </thead>
                         <tbody>
                             {% for repo in repositories %}
-                            <tr>
+                            <tr data-repo="{{ repo.name }}">
                                 <td>
                                     <i class="fas fa-code-branch"></i>
                                     {{ repo.name }}
                                 </td>
-                                <td>
+                                <td class="repo-url">
                                     <a href="{{ repo.url }}" target="_blank">{{ repo.url }}</a>
                                 </td>
-                                <td>
+                                <td class="repo-path">
                                     <i class="fas fa-folder"></i>
                                     {{ repo.local_path }}
                                 </td>
