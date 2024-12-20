@@ -46,7 +46,6 @@ def save_config(config):
         os.makedirs(os.path.dirname(CONFIG_FILE), exist_ok=True)
         with open(CONFIG_FILE, 'w') as f:
             json.dump(config, f, indent=4)
-        restart_sync_service()
     except Exception as e:
         raise Exception(f"Fout bij opslaan configuratie: {str(e)}")
 
