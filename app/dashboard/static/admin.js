@@ -25,7 +25,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Repository management
     window.deleteRepo = async function(name) {
-        if (confirm(`Are you sure you want to delete repository "${name}"?`)) { // Fixed string template syntax
+        if (confirm(`Are you sure you want to delete repository "${name}"?`)) {
             try {
                 const response = await fetch('/api/repo', {
                     method: 'DELETE',
@@ -45,7 +45,7 @@ document.addEventListener('DOMContentLoaded', function() {
     };
 
     window.editRepo = function(name) {
-        const row = document.querySelector(`tr[data-repo="${name}"]`); // Fixed string template syntax
+        const row = document.querySelector(`tr[data-repo="${name}"]`);
         const url = row.querySelector('.repo-url').textContent;
         const path = row.querySelector('.repo-path').textContent;
 
@@ -66,7 +66,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 </div>
                 <button type="submit">Update Repository</button>
             </form>
-        `); // Fixed string template syntax
+        `);
 
         document.getElementById('edit-repo-form').onsubmit = async (e) => {
             e.preventDefault();
@@ -91,7 +91,6 @@ document.addEventListener('DOMContentLoaded', function() {
         };
     };
 
-// In app/dashboard/static/admin.js
 window.showAddRepoForm = function() {
     showModal('Add Repository', `
         <form id="add-repo-form" class="repository-form">
@@ -149,7 +148,7 @@ function showModal(title, content) {
                 ${content}
             </div>
         </div>
-    `; // Fixed string template syntax
+    `;
 
     document.body.appendChild(modal);
     modal.querySelector('.close').onclick = () => modal.remove();
@@ -157,7 +156,7 @@ function showModal(title, content) {
 
 function showNotification(message, type) {
     const notification = document.createElement('div');
-    notification.className = `notification ${type}`; // Fixed string template syntax
+    notification.className = `notification ${type}`;
     notification.textContent = message;
     document.body.appendChild(notification);
     
