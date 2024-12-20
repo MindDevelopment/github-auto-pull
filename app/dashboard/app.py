@@ -6,7 +6,7 @@ from http import HTTPStatus
 
 app = Flask(__name__)
 app.secret_key = os.urandom(24)
-CONFIG_FILE = 'app/config/config.json'
+CONFIG_FILE = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'config', 'config.json')
 
 # Error handling
 class ConfigError(Exception):
@@ -61,7 +61,6 @@ def config_error(error):
 # Base routes
 @app.route('/')
 def index():
-    """Basis dashboard view voor niet-admin gebruikers"""
     try:
         config = load_config()
         return render_template('index.html', 
@@ -166,6 +165,14 @@ def update_webhook():
         return jsonify({"error": str(e)}), HTTPStatus.INTERNAL_SERVER_ERROR
     except Exception as e:
         return jsonify({"error": "Onverwachte fout"}), HTTPStatus.INTERNAL_SERVER_ERROR
+
+@app.route("/api/status", methods=["GET"])
+def get_status():
+    try:
+        config = load_config()
+        return jsonify(config.get('sync_status', {}))
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000)

@@ -12,5 +12,10 @@
     "admin": {
         "username": "admin",
         "password": "admin123"
+    },
+    "sync_status": {
+        "last_sync_times": {},
+        "sync_errors": {},
+        "sync_statistics": {}
     }
 }

@@ -51,6 +51,44 @@ def restart_sync_service():
         logging.error(f"Error during service restart: {e}")
         return False
 
+def update_sync_status(repo_name, status, error=None):
+    with open(CONFIG_FILE) as f:
+        config = json.load(f)
+    
+    if 'sync_status' not in config:
+        config['sync_status'] = {
+            'last_sync_times': {},
+            'sync_errors': {},
+            'sync_statistics': {}
+        }
+    
+    current_time = datetime.now().isoformat()
+    config['sync_status']['last_sync_times'][repo_name] = current_time
+    
+    if error:
+        if repo_name not in config['sync_status']['sync_errors']:
+            config['sync_status']['sync_errors'][repo_name] = []
+        config['sync_status']['sync_errors'][repo_name].append({
+            'time': current_time,
+            'error': str(error)
+        })
+    
+    # Update statistieken
+    if repo_name not in config['sync_status']['sync_statistics']:
+        config['sync_status']['sync_statistics'][repo_name] = {
+            'total_syncs': 0,
+            'successful_syncs': 0,
+            'failed_syncs': 0
+        }
+    
+    config['sync_status']['sync_statistics'][repo_name]['total_syncs'] += 1
+    if error:
+        config['sync_status']['sync_statistics'][repo_name]['failed_syncs'] += 1
+    else:
+        config['sync_status']['sync_statistics'][repo_name]['successful_syncs'] += 1
+    
+    save_config(config)
+
 def main():
     try:
         # Laad configuratie
@@ -86,12 +124,24 @@ def main():
                     logging.info(f"Time since last sync: {current_time - last_sync_time}")
                 
                 # Synchroniseer repositories
-                updates = sync_repositories(config['repositories'])
-                if updates:
-                    logging.info(f"Found {len(updates)} updates")
-                    send_notifications(config['discord_webhook'], updates)
-                else:
-                    logging.info("No updates found")
+                for repo in config['repositories']:
+                    try:
+                        # Sync repository
+                        updates = sync_repositories([repo])
+                        
+                        # Update status
+                        if updates:
+                            update_sync_status(repo['name'], 'success')
+                            send_notifications(config['discord_webhook'], updates)
+                        else:
+                            update_sync_status(repo['name'], 'success')
+                            logging.info(f"No updates for {repo['name']}")
+                            
+                    except Exception as repo_error:
+                        error_msg = f"Error syncing {repo['name']}: {str(repo_error)}"
+                        logging.error(error_msg)
+                        update_sync_status(repo['name'], 'error', repo_error)
+                        send_notification(config['discord_webhook'], error_msg, "error")
                 
                 # Update laatste sync tijd
                 last_sync_time = current_time
@@ -105,7 +155,7 @@ def main():
                 raise
             except Exception as e:
                 error_msg = f"Error during sync #{sync_count}: {str(e)}"
-                logging.error(error_msg, exc_info=True)  # Include stack trace
+                logging.error(error_msg, exc_info=True)
                 send_notification(config['discord_webhook'], error_msg, "error")
                 time.sleep(30)  # Wacht voor nieuwe poging
                 
