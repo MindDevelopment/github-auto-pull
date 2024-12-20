@@ -304,3 +304,132 @@ th {
         transform: translateX(0);
     }
 }
+/* Dashboard container styling */
+.dashboard-container {
+    max-width: 1200px;
+    margin: 2rem auto;
+    padding: 0 1rem;
+}
+
+/* Status section styling */
+.status-section {
+    margin-bottom: 2rem;
+}
+
+.status-section h2 {
+    color: #00adb5;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 1.5rem;
+}
+
+.status-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.status-card {
+    background: #1e1e1e;
+    padding: 1.5rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.status-card i {
+    font-size: 2rem;
+    color: #00adb5;
+    margin-bottom: 1rem;
+}
+
+.status-card h3 {
+    color: #ffffff;
+    margin: 0.5rem 0;
+}
+
+/* Repository overview styling */
+.repo-overview-section {
+    margin-top: 2rem;
+}
+
+.repo-overview-section h2 {
+    color: #00adb5;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 1.5rem;
+}
+
+.repo-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+}
+
+.repo-card {
+    background: #1e1e1e;
+    border-radius: 8px;
+    padding: 1.5rem;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+.repo-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.repo-header h3 {
+    color: #ffffff;
+    margin: 0;
+}
+
+.repo-details {
+    margin-bottom: 1rem;
+}
+
+.repo-details p {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 0.5rem 0;
+    color: #aaa;
+}
+
+.repo-details i {
+    color: #00adb5;
+}
+
+.repo-stats {
+    border-top: 1px solid #333;
+    padding-top: 1rem;
+}
+
+.stat {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: #aaa;
+}
+
+.stat i {
+    color: #00adb5;
+}
+
+.status-badge {
+    padding: 0.3rem 0.8rem;
+    border-radius: 15px;
+    font-size: 0.9rem;
+}
+
+.status-badge.active {
+    background: #28a745;
+    color: white;
+}
