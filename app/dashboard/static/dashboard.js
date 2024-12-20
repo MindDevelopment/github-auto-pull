@@ -2,43 +2,40 @@
 
 document.addEventListener('DOMContentLoaded', function() {
     // Repository updates
-    const updateStatus = () => {
-        const repoCards = document.querySelectorAll('.repo-card');
-        repoCards.forEach(async card => {
-            try {
-                const response = await fetch(`/api/status/${card.dataset.repo}`);
-                const data = await response.json();
-                card.querySelector('.last-sync').textContent = data.lastSync;
-                card.querySelector('.status-badge').className = 
-                    `status-badge ${data.status}`;
-            } catch (error) {
-                console.error('Error updating status:', error);
-            }
-        });
-    };
-
-    // Update status elke minuut
-    setInterval(updateStatus, 60000);
-    updateStatus();
-
-    // System status updates
-    const updateSystemStatus = async () => {
+    const updateStatus = async () => {
         try {
-            const response = await fetch('/api/system-status');
+            const response = await fetch('/api/status');
             const data = await response.json();
-            document.getElementById('sync-status').className = 
-                `status-badge ${data.syncStatus}`;
-            document.getElementById('webhook-status').className = 
-                `status-badge ${data.webhookStatus}`;
-            document.getElementById('last-sync').textContent = data.lastSync;
+            
+            // Update last sync times voor elke repository
+            const repoCards = document.querySelectorAll('.repo-card');
+            repoCards.forEach(card => {
+                const repoName = card.dataset.repo;
+                const lastSyncTime = data.last_sync_times?.[repoName];
+                if (lastSyncTime) {
+                    // Convert ISO timestamp to readable format
+                    const date = new Date(lastSyncTime);
+                    const formattedDate = date.toLocaleString();
+                    card.querySelector('.last-sync').textContent = formattedDate;
+                }
+            });
+
+            // Update global last sync time
+            if (data.last_sync_times) {
+                const lastSyncTimes = Object.values(data.last_sync_times);
+                if (lastSyncTimes.length > 0) {
+                    const mostRecent = new Date(Math.max(...lastSyncTimes.map(t => new Date(t))));
+                    document.getElementById('last-sync').textContent = mostRecent.toLocaleString();
+                }
+            }
         } catch (error) {
-            console.error('Error updating system status:', error);
+            console.error('Error updating status:', error);
         }
     };
 
-    // Update system status elke 30 seconden
-    setInterval(updateSystemStatus, 30000);
-    updateSystemStatus();
+    // Update elke minuut
+    setInterval(updateStatus, 60000);
+    updateStatus(); // Initial update
 });
 
 // Utility functions
