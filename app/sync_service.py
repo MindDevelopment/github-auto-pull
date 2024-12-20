@@ -57,26 +57,6 @@ def check_process_running(process_name):
     except subprocess.CalledProcessError:
         return False
 
-def restart_sync_service():
-    service_name = "python.exe"
-    try:
-        if check_process_running(service_name):
-            logging.info("Stopping existing sync service...")
-            subprocess.run(['taskkill', '/F', '/IM', service_name], check=True)
-            time.sleep(2)
-
-        logging.info("Starting new sync service instance...")
-        subprocess.Popen(
-            ['cmd.exe', '/c', 'start', 'python', 'app/sync_service.py'],
-            shell=True,
-            stdout=subprocess.DEVNULL,  # Schakel logging uit voor subprocess
-            stderr=subprocess.DEVNULL
-        )
-        return True
-    except subprocess.CalledProcessError as e:
-        logging.error(f"Error during service restart: {e}")
-        return False
-
 def update_sync_status(repo_name, status, error=None):
     try:
         with open(CONFIG_FILE) as f:
@@ -145,17 +125,20 @@ def main():
                 for repo in config['repositories']:
                     try:
                         updates = sync_repositories([repo])
+
                         if updates:
                             update_sync_status(repo['name'], 'success')
                             send_notifications(config['discord_webhook'], updates)
                         else:
                             update_sync_status(repo['name'], 'success')
                             logging.info(f"No updates for {repo['name']}")
+
                     except Exception as repo_error:
                         error_msg = f"Error syncing {repo['name']}: {str(repo_error)}"
                         logging.error(error_msg)
                         update_sync_status(repo['name'], 'error', repo_error)
                         send_notification(config['discord_webhook'], error_msg, "error")
+
                 last_sync_time = current_time
 
                 logging.info(f"Waiting {config['sync_interval']} seconds until next sync")
@@ -178,7 +161,6 @@ def main():
         send_notification(config['discord_webhook'], fatal_error, "error")
 
     finally:
-        logging.shutdown()  # Zorg ervoor dat logging correct wordt afgesloten
         logging.info("Service stopped")
 
 if __name__ == "__main__":
