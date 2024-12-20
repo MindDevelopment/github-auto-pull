@@ -5,6 +5,7 @@ import logging
 import subprocess
 import sys
 from datetime import datetime
+from filelock import FileLock
 from controllers.repo_sync import sync_repositories
 from controllers.notifier import send_notification, send_notifications
 
@@ -16,22 +17,25 @@ def setup_logging(log_file):
     log_dir = os.path.dirname(log_file)
     os.makedirs(log_dir, exist_ok=True)
 
-    for handler in logging.root.handlers[:]:
-        if isinstance(handler, logging.FileHandler) or isinstance(handler, logging.StreamHandler):
-            logging.root.removeHandler(handler)
+    lock_file = log_file + '.lock'
+    lock = FileLock(lock_file)
+
+    with lock:
+        for handler in logging.root.handlers[:]:
             if hasattr(handler, 'close'):
                 handler.close()
+            logging.root.removeHandler(handler)
 
-    logging.basicConfig(
-        filename=log_file,
-        level=logging.INFO,
-        format='%(asctime)s [%(levelname)s] - %(message)s',
-        datefmt='%Y-%m-%d %H:%M:%S'
-    )
+        logging.basicConfig(
+            filename=log_file,
+            level=logging.INFO,
+            format='%(asctime)s [%(levelname)s] - %(message)s',
+            datefmt='%Y-%m-%d %H:%M:%S'
+        )
 
-    console_handler = logging.StreamHandler(sys.stdout)
-    console_handler.setLevel(logging.INFO)
-    logging.getLogger().addHandler(console_handler)
+        console_handler = logging.StreamHandler(sys.stdout)
+        console_handler.setLevel(logging.INFO)
+        logging.getLogger().addHandler(console_handler)
 
 def save_config(config):
     try:
@@ -58,8 +62,12 @@ def restart_sync_service():
             time.sleep(2)
 
         logging.info("Starting new sync service instance...")
-        subprocess.Popen(['cmd.exe', '/c', 'start', 'python', 'app/sync_service.py'],
-                         shell=True)
+        subprocess.Popen(
+            ['cmd.exe', '/c', 'start', 'python', 'app/sync_service.py'],
+            shell=True,
+            stdout=subprocess.DEVNULL,  # Schakel logging uit voor subprocess
+            stderr=subprocess.DEVNULL
+        )
         return True
     except subprocess.CalledProcessError as e:
         logging.error(f"Error during service restart: {e}")
@@ -169,6 +177,7 @@ def main():
         send_notification(config['discord_webhook'], fatal_error, "error")
 
     finally:
+        logging.shutdown()  # Zorg ervoor dat logging correct wordt afgesloten
         logging.info("Service stopped")
 
 if __name__ == "__main__":
