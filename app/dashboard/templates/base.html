@@ -12,17 +12,13 @@
 <body>
     <nav class="admin-nav">
         <div class="nav-brand">
-            <i class="fas fa-alt"></i>
+            <i class="fab fa-github"></i>
             <span>GitHub Auto Pull</span>
         </div>
         {% if session.get('logged_in') %}
         <div class="nav-links">
-            {% if request.endpoint != 'admin' %}
             <a href="/admin" class="nav-link"><i class="fas fa-cog"></i> Admin</a>
-            {% endif %}
-            <a href="/logout" class="logout-btn">
-                <i class="fas fa-sign-out-alt"></i> Logout
-            </a>
+            <a href="/logout" class="nav-link"><i class="fas fa-sign-out-alt"></i> Logout</a>
         </div>
         {% endif %}
     </nav>

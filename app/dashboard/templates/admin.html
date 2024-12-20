@@ -1,36 +1,67 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}GitHub Auto Pull{% endblock %}</title>
-    <link rel="stylesheet" href="/static/style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    {% block extra_head %}{% endblock %}
-</head>
-<body>
-    <nav class="admin-nav">
-        <div class="nav-brand">
-            <i class="fas fa-alt"></i>
-            <span>GitHub Auto Pull</span>
-        </div>
-        {% if session.get('logged_in') %}
-        <div class="nav-links">
-            {% if request.endpoint != 'admin' %}
-            <a href="/admin" class="nav-link"><i class="fas fa-cog"></i> Admin</a>
-            {% endif %}
-            <a href="/logout" class="logout-btn">
-                <i class="fas fa-sign-out-alt"></i> Logout
-            </a>
-        </div>
-        {% endif %}
-    </nav>
+{% extends "base.html" %}
 
-    <div class="container">
-        {% block content %}{% endblock %}
+{% block title %}Admin - GitHub Auto Pull{% endblock %}
+
+{% block content %}
+<div class="admin-container">
+    <div class="card">
+        <div class="card-header">
+            <i class="fab fa-discord"></i>
+            <h2>Discord Webhook</h2>
+        </div>
+        <div class="card-content">
+            <form id="webhook-form">
+                <div class="input-group">
+                    <input type="text" id="webhook-url" value="{{ webhook }}" placeholder="Discord Webhook URL">
+                    <button type="submit">Update Webhook</button>
+                </div>
+            </form>
+        </div>
     </div>
 
-    {% block scripts %}{% endblock %}
-</body>
-</html>
+    <div class="card">
+        <div class="card-header">
+            <i class="fab fa-github"></i>
+            <h2>Repositories</h2>
+            <button class="add-repo-btn" onclick="showAddRepoForm()">
+                <i class="fas fa-plus"></i> Add Repository
+            </button>
+        </div>
+        <div class="card-content">
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>URL</th>
+                            <th>Local Path</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for repo in repositories %}
+                        <tr data-repo="{{ repo.name }}">
+                            <td>{{ repo.name }}</td>
+                            <td class="repo-url">{{ repo.url }}</td>
+                            <td class="repo-path">{{ repo.local_path }}</td>
+                            <td class="action-buttons">
+                                <button class="edit-btn" onclick="editRepo('{{ repo.name }}')">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button class="delete-btn" onclick="deleteRepo('{{ repo.name }}')">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="/static/admin.js"></script>
+{% endblock %}

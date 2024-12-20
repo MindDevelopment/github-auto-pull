@@ -5,34 +5,34 @@
 {% block content %}
 <div class="dashboard-container">
     <section class="status-section">
-        <h2><i class="fas fa-info-circle"></i> Systeem Status</h2>
+        <h2><i class="fas fa-info-circle"></i> System Status</h2>
         <div class="status-cards">
             <div class="status-card">
                 <i class="fas fa-sync"></i>
                 <h3>Sync Status</h3>
-                <span class="status-badge active">Actief</span>
+                <span id="sync-status" class="status-badge active">Active</span>
             </div>
             <div class="status-card">
                 <i class="fab fa-discord"></i>
                 <h3>Discord Webhook</h3>
-                <span class="status-badge active">Verbonden</span>
+                <span id="webhook-status" class="status-badge active">Connected</span>
             </div>
             <div class="status-card">
                 <i class="fas fa-clock"></i>
-                <h3>Laatste Sync</h3>
-                <span id="last-sync">1 minuut geleden</span>
+                <h3>Last Sync</h3>
+                <span id="last-sync">Loading...</span>
             </div>
         </div>
     </section>
 
     <section class="repo-overview-section">
-        <h2><i class="fab fa-github"></i> Repository Overzicht</h2>
+        <h2><i class="fab fa-github"></i> Repository Overview</h2>
         <div class="repo-cards">
             {% for repo in repositories %}
-            <div class="repo-card">
+            <div class="repo-card" data-repo="{{ repo.name }}">
                 <div class="repo-header">
                     <h3>{{ repo.name }}</h3>
-                    <span class="status-badge active">Actief</span>
+                    <span class="status-badge active">Active</span>
                 </div>
                 <div class="repo-details">
                     <p><i class="fas fa-link"></i> {{ repo.url }}</p>
@@ -40,8 +40,8 @@
                 </div>
                 <div class="repo-stats">
                     <div class="stat">
-                        <i class="fas fa-code-branch"></i>
-                        <span>Laatste update: <span class="sync-status">-</span></span>
+                        <i class="fas fa-clock"></i>
+                        <span>Last update: <span class="last-sync">-</span></span>
                     </div>
                 </div>
             </div>
