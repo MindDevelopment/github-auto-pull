@@ -14,8 +14,23 @@
         "password": "admin123"
     },
     "sync_status": {
-        "last_sync_times": {},
-        "sync_errors": {},
-        "sync_statistics": {}
+        "last_sync_times": {
+            "github-auto-pull": "2024-12-20T22:44:36.719652"
+        },
+        "sync_errors": {
+            "github-auto-pull": [
+                {
+                    "time": "2024-12-20T22:44:36.719652",
+                    "error": "Git error in github-auto-pull: Command '['git', '-C', 'C:/Users/Administrator/Desktop/Github/github-auto-pull', 'reset', '--hard']' returned non-zero exit status 128."
+                }
+            ]
+        },
+        "sync_statistics": {
+            "github-auto-pull": {
+                "total_syncs": 1,
+                "successful_syncs": 0,
+                "failed_syncs": 1
+            }
+        }
     }
 }

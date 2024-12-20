@@ -50,3 +50,60 @@
 2024-12-20 22:22:42 [INFO] - Starting sync #3
 2024-12-20 22:22:42 [INFO] - Time since last sync: 0:00:11.206554
 2024-12-20 22:22:42 [INFO] - Pullen voor github-auto-pull
+2024-12-20 22:24:08 [INFO] - ==================================================
+2024-12-20 22:24:08 [INFO] - Starting GitHub Auto Pull Service
+2024-12-20 22:24:08 [INFO] - Configuration loaded: 1 repositories configured
+2024-12-20 22:24:08 [INFO] - Sync interval: 10 seconds
+2024-12-20 22:24:08 [INFO] - Starting sync #1
+2024-12-20 22:24:08 [INFO] - Pullen voor github-auto-pull
+2024-12-20 22:33:53 [ERROR] - Git error in github-auto-pull: Command '['git', '-C', 'C:/Users/Administrator/Desktop/Github/github-auto-pull', 'reset', '--hard']' returned non-zero exit status 128.
+2024-12-20 22:33:53 [ERROR] - Error syncing github-auto-pull: Git error in github-auto-pull: Command '['git', '-C', 'C:/Users/Administrator/Desktop/Github/github-auto-pull', 'reset', '--hard']' returned non-zero exit status 128.
+2024-12-20 22:33:53 [INFO] - Starting new sync service instance...
+2024-12-20 22:33:54 [INFO] - Waiting 10 seconds until next sync
+2024-12-20 22:33:54 [INFO] - ==================================================
+2024-12-20 22:33:54 [INFO] - Starting GitHub Auto Pull Service
+2024-12-20 22:33:54 [INFO] - Configuration loaded: 1 repositories configured
+2024-12-20 22:33:54 [INFO] - Sync interval: 10 seconds
+2024-12-20 22:33:55 [INFO] - Starting sync #1
+2024-12-20 22:33:55 [INFO] - Pullen voor github-auto-pull
+2024-12-20 22:33:57 [ERROR] - Git error in github-auto-pull: Command '['git', '-C', 'C:/Users/Administrator/Desktop/Github/github-auto-pull', 'reset', '--hard']' returned non-zero exit status 128.
+2024-12-20 22:33:57 [ERROR] - Error syncing github-auto-pull: Git error in github-auto-pull: Command '['git', '-C', 'C:/Users/Administrator/Desktop/Github/github-auto-pull', 'reset', '--hard']' returned non-zero exit status 128.
+2024-12-20 22:33:58 [INFO] - Starting new sync service instance...
+2024-12-20 22:33:59 [INFO] - Waiting 10 seconds until next sync
+2024-12-20 22:33:59 [INFO] - ==================================================
+2024-12-20 22:33:59 [INFO] - Starting GitHub Auto Pull Service
+2024-12-20 22:33:59 [INFO] - Configuration loaded: 1 repositories configured
+2024-12-20 22:33:59 [INFO] - Sync interval: 10 seconds
+2024-12-20 22:34:00 [INFO] - Starting sync #1
+2024-12-20 22:34:00 [INFO] - Pullen voor github-auto-pull
+2024-12-20 22:34:04 [INFO] - Starting sync #2
+2024-12-20 22:34:04 [INFO] - Time since last sync: 0:09:55.683340
+2024-12-20 22:34:04 [INFO] - Pullen voor github-auto-pull
+2024-12-20 22:39:30 [INFO] - ==================================================
+2024-12-20 22:39:30 [INFO] - Starting GitHub Auto Pull Service
+2024-12-20 22:39:30 [INFO] - Configuration loaded: 1 repositories configured
+2024-12-20 22:39:30 [INFO] - Sync interval: 10 seconds
+2024-12-20 22:39:31 [INFO] - Starting sync #1
+2024-12-20 22:39:31 [INFO] - Pullen voor github-auto-pull
+2024-12-20 22:39:40 [ERROR] - Git error in github-auto-pull: Command '['git', '-C', 'C:/Users/Administrator/Desktop/Github/github-auto-pull', 'reset', '--hard']' returned non-zero exit status 128.
+2024-12-20 22:39:40 [ERROR] - Error syncing github-auto-pull: Git error in github-auto-pull: Command '['git', '-C', 'C:/Users/Administrator/Desktop/Github/github-auto-pull', 'reset', '--hard']' returned non-zero exit status 128.
+2024-12-20 22:39:40 [INFO] - Starting new sync service instance...
+2024-12-20 22:39:42 [INFO] - ==================================================
+2024-12-20 22:39:42 [INFO] - Starting GitHub Auto Pull Service
+2024-12-20 22:39:42 [INFO] - Configuration loaded: 1 repositories configured
+2024-12-20 22:39:42 [INFO] - Sync interval: 10 seconds
+2024-12-20 22:39:42 [INFO] - Starting sync #1
+2024-12-20 22:39:42 [INFO] - Pullen voor github-auto-pull
+2024-12-20 22:39:43 [INFO] - Waiting 10 seconds until next sync
+2024-12-20 22:39:53 [INFO] - Starting sync #2
+2024-12-20 22:39:53 [INFO] - Time since last sync: 0:00:21.571955
+2024-12-20 22:39:53 [INFO] - Pullen voor github-auto-pull
+2024-12-20 22:44:31 [INFO] - ==================================================
+2024-12-20 22:44:31 [INFO] - Starting GitHub Auto Pull Service
+2024-12-20 22:44:31 [INFO] - Configuration loaded: 1 repositories configured
+2024-12-20 22:44:31 [INFO] - Sync interval: 10 seconds
+2024-12-20 22:44:32 [INFO] - Starting sync #1
+2024-12-20 22:44:32 [INFO] - Pullen voor github-auto-pull
+2024-12-20 22:44:36 [ERROR] - Git error in github-auto-pull: Command '['git', '-C', 'C:/Users/Administrator/Desktop/Github/github-auto-pull', 'reset', '--hard']' returned non-zero exit status 128.
+2024-12-20 22:44:36 [ERROR] - Error syncing github-auto-pull: Git error in github-auto-pull: Command '['git', '-C', 'C:/Users/Administrator/Desktop/Github/github-auto-pull', 'reset', '--hard']' returned non-zero exit status 128.
+2024-12-20 22:44:36 [INFO] - Stopping existing sync service...
