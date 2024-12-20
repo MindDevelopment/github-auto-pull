@@ -6,7 +6,7 @@ from http import HTTPStatus
 
 app = Flask(__name__)
 app.secret_key = os.urandom(24)
-CONFIG_FILE = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'config', 'config.json')
+CONFIG_FILE = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'app', 'config', 'config.json')
 
 # Error handling
 class ConfigError(Exception):
