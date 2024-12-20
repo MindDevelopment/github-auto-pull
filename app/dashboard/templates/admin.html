@@ -1,3 +1,4 @@
+<!-- app/dashboard/templates/admin.html -->
 {% extends "base.html" %}
 
 {% block title %}Admin - GitHub Auto Pull{% endblock %}
@@ -13,55 +14,9 @@
             <form id="webhook-form">
                 <div class="input-group">
                     <input type="text" id="webhook-url" value="{{ webhook }}" placeholder="Discord Webhook URL">
-                    <button type="submit">Update Webhook</button>
+                    <button type="submit">
+                        <i class="fas fa-save"></i>
+                        Update Webhook
+                    </button>
                 </div>
-            </form>
-        </div>
-    </div>
-
-    <div class="card">
-        <div class="card-header">
-            <i class="fab fa-github"></i>
-            <h2>Repositories</h2>
-            <button class="add-repo-btn" onclick="showAddRepoForm()">
-                <i class="fas fa-plus"></i> Add Repository
-            </button>
-        </div>
-        <div class="card-content">
-            <div class="table-container">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Name</th>
-                            <th>URL</th>
-                            <th>Local Path</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for repo in repositories %}
-                        <tr data-repo="{{ repo.name }}">
-                            <td>{{ repo.name }}</td>
-                            <td class="repo-url">{{ repo.url }}</td>
-                            <td class="repo-path">{{ repo.local_path }}</td>
-                            <td class="action-buttons">
-                                <button class="edit-btn" onclick="editRepo('{{ repo.name }}')">
-                                    <i class="fas fa-edit"></i>
-                                </button>
-                                <button class="delete-btn" onclick="deleteRepo('{{ repo.name }}')">
-                                    <i class="fas fa-trash"></i>
-                                </button>
-                            </td>
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </div>
-</div>
-{% endblock %}
-
-{% block scripts %}
-<script src="/static/admin.js"></script>
-{% endblock %}
+            </form

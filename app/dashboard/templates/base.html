@@ -1,3 +1,4 @@
+<!-- app/dashboard/templates/base.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,26 +7,31 @@
     <title>{% block title %}GitHub Auto Pull{% endblock %}</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     {% block extra_head %}{% endblock %}
 </head>
 <body>
     <nav class="admin-nav">
-        <div class="nav-brand">
+        <a href="/" class="nav-brand">
             <i class="fab fa-github"></i>
             <span>GitHub Auto Pull</span>
-        </div>
+        </a>
         {% if session.get('logged_in') %}
         <div class="nav-links">
-            <a href="/admin" class="nav-link"><i class="fas fa-cog"></i> Admin</a>
-            <a href="/logout" class="nav-link"><i class="fas fa-sign-out-alt"></i> Logout</a>
+            <a href="/admin" class="nav-link">
+                <i class="fas fa-cog"></i>
+                <span>Admin</span>
+            </a>
+            <a href="/logout" class="nav-link">
+                <i class="fas fa-sign-out-alt"></i>
+                <span>Logout</span>
+            </a>
         </div>
         {% endif %}
     </nav>
 
-    <div class="container">
+    <main class="container">
         {% block content %}{% endblock %}
-    </div>
+    </main>
 
     {% block scripts %}{% endblock %}
 </body>

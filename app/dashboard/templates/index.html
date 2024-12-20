@@ -1,3 +1,4 @@
+<!-- app/dashboard/templates/index.html -->
 {% extends "base.html" %}
 
 {% block title %}Dashboard - GitHub Auto Pull{% endblock %}
@@ -5,52 +6,66 @@
 {% block content %}
 <div class="dashboard-container">
     <section class="status-section">
-        <h2><i class="fas fa-info-circle"></i> System Status</h2>
-        <div class="status-cards">
-            <div class="status-card">
-                <i class="fas fa-sync"></i>
-                <h3>Sync Status</h3>
-                <span id="sync-status" class="status-badge active">Active</span>
+        <div class="card">
+            <div class="card-header">
+                <i class="fas fa-info-circle"></i>
+                <h2>System Status</h2>
             </div>
-            <div class="status-card">
-                <i class="fab fa-discord"></i>
-                <h3>Discord Webhook</h3>
-                <span id="webhook-status" class="status-badge active">Connected</span>
-            </div>
-            <div class="status-card">
-                <i class="fas fa-clock"></i>
-                <h3>Last Sync</h3>
-                <span id="last-sync">Loading...</span>
+            <div class="card-content">
+                <div class="status-cards">
+                    <div class="status-card">
+                        <i class="fas fa-sync"></i>
+                        <h3>Sync Status</h3>
+                        <span id="sync-status" class="status-badge active">Active</span>
+                    </div>
+                    <div class="status-card">
+                        <i class="fab fa-discord"></i>
+                        <h3>Discord Webhook</h3>
+                        <span id="webhook-status" class="status-badge active">Connected</span>
+                    </div>
+                    <div class="status-card">
+                        <i class="fas fa-clock"></i>
+                        <h3>Last Sync</h3>
+                        <span id="last-sync">Loading...</span>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
 
     <section class="repo-overview-section">
-        <h2><i class="fab fa-github"></i> Repository Overview</h2>
-        <div class="repo-cards">
-            {% for repo in repositories %}
-            <div class="repo-card" data-repo="{{ repo.name }}">
-                <div class="repo-header">
-                    <h3>{{ repo.name }}</h3>
-                    <span class="status-badge active">Active</span>
-                </div>
-                <div class="repo-details">
-                    <p><i class="fas fa-link"></i> {{ repo.url }}</p>
-                    <p><i class="fas fa-folder"></i> {{ repo.local_path }}</p>
-                </div>
-                <div class="repo-stats">
-                    <div class="stat">
-                        <i class="fas fa-clock"></i>
-                        <span>Last update: <span class="last-sync">-</span></span>
+        <div class="card">
+            <div class="card-header">
+                <i class="fab fa-github"></i>
+                <h2>Repository Overview</h2>
+            </div>
+            <div class="card-content">
+                <div class="repo-cards">
+                    {% for repo in repositories %}
+                    <div class="repo-card" data-repo="{{ repo.name }}">
+                        <div class="repo-header">
+                            <h3>{{ repo.name }}</h3>
+                            <span class="status-badge active">Active</span>
+                        </div>
+                        <div class="repo-details">
+                            <p><i class="fas fa-link"></i>{{ repo.url }}</p>
+                            <p><i class="fas fa-folder"></i>{{ repo.local_path }}</p>
+                        </div>
+                        <div class="repo-stats">
+                            <p class="stat">
+                                <i class="fas fa-clock"></i>
+                                Last update: <span class="last-sync">-</span>
+                            </p>
+                        </div>
                     </div>
+                    {% endfor %}
                 </div>
             </div>
-            {% endfor %}
         </div>
     </section>
 </div>
 {% endblock %}
 
 {% block scripts %}
-<script src="/static/dashboard.js"></script>
+<script src="{{ url_for('static', filename='dashboard.js') }}"></script>
 {% endblock %}
