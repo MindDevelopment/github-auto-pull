@@ -91,47 +91,48 @@ document.addEventListener('DOMContentLoaded', function() {
         };
     };
 
-    window.showAddRepoForm = function() {
-        showModal('Add Repository', `
-            <form id="add-repo-form" class="repository-form">
-                <div class="form-group">
-                    <label>Repository Name</label>
-                    <input type="text" name="name" placeholder="Repository Name" required>
-                </div>
-                <div class="form-group">
-                    <label>Repository URL</label>
-                    <input type="text" name="url" placeholder="Repository URL" required>
-                </div>
-                <div class="form-group">
-                    <label>Local Path</label>
-                    <input type="text" name="local_path" placeholder="Local Path" required>
-                </div>
-                <button type="submit">Add Repository</button>
-            </form>
-        `); // Fixed string template syntax
+// In app/dashboard/static/admin.js
+window.showAddRepoForm = function() {
+    showModal('Add Repository', `
+        <form id="add-repo-form" class="repository-form">
+            <div class="form-group">
+                <label>Repository Name</label>
+                <input type="text" name="name" placeholder="Repository Name" required>
+            </div>
+            <div class="form-group">
+                <label>Repository URL</label>
+                <input type="text" name="url" placeholder="Repository URL" required>
+            </div>
+            <div class="form-group">
+                <label>Local Path</label>
+                <input type="text" name="local_path" placeholder="Local Path" required>
+            </div>
+            <button type="submit">Add Repository</button>
+        </form>
+    `);
 
-        document.getElementById('add-repo-form').onsubmit = async (e) => {
-            e.preventDefault();
-            const formData = new FormData(e.target);
-            const data = Object.fromEntries(formData);
-            
-            try {
-                const response = await fetch('/api/repo', {
-                    method: 'POST',
-                    headers: {'Content-Type': 'application/json'},
-                    body: JSON.stringify(data)
-                });
-                if (response.ok) {
-                    showNotification('Repository added successfully', 'success');
-                    location.reload();
-                } else {
-                    showNotification('Failed to add repository', 'error');
-                }
-            } catch (error) {
-                showNotification('Error adding repository', 'error');
+    document.getElementById('add-repo-form').onsubmit = async (e) => {
+        e.preventDefault();
+        const formData = new FormData(e.target);
+        const data = Object.fromEntries(formData);
+        
+        try {
+            const response = await fetch('/api/repo', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify(data)
+            });
+            if (response.ok) {
+                showNotification('Repository added successfully', 'success');
+                location.reload();
+            } else {
+                showNotification('Failed to add repository', 'error');
             }
-        };
+        } catch (error) {
+            showNotification('Error adding repository', 'error');
+        }
     };
+};
 });
 
 // Utility functions
