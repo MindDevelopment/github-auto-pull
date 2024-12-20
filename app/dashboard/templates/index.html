@@ -1,69 +1,56 @@
-<!-- app/dashboard/templates/index.html -->
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard - GitHub Auto Pull</title>
-    <link rel="stylesheet" href="/static/style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-</head>
-<body>
-    <nav class="admin-nav">
-        <div class="nav-brand">GitHub Auto Pull</div>
-        <div class="nav-links">
-            <a href="/admin" class="nav-link"><i class="fas fa-cog"></i> Admin</a>
-            <a href="/logout" class="nav-link logout-btn"><i class="fas fa-sign-out-alt"></i> Logout</a>
-        </div>
-    </nav>
+{% extends "base.html" %}
 
-    <div class="dashboard-container">
-        <section class="status-section">
-            <h2><i class="fas fa-info-circle"></i> Systeem Status</h2>
-            <div class="status-cards">
-                <div class="status-card">
-                    <i class="fas fa-sync"></i>
-                    <h3>Sync Status</h3>
+{% block title %}Dashboard - GitHub Auto Pull{% endblock %}
+
+{% block content %}
+<div class="dashboard-container">
+    <section class="status-section">
+        <h2><i class="fas fa-info-circle"></i> Systeem Status</h2>
+        <div class="status-cards">
+            <div class="status-card">
+                <i class="fas fa-sync"></i>
+                <h3>Sync Status</h3>
+                <span class="status-badge active">Actief</span>
+            </div>
+            <div class="status-card">
+                <i class="fab fa-discord"></i>
+                <h3>Discord Webhook</h3>
+                <span class="status-badge active">Verbonden</span>
+            </div>
+            <div class="status-card">
+                <i class="fas fa-clock"></i>
+                <h3>Laatste Sync</h3>
+                <span id="last-sync">1 minuut geleden</span>
+            </div>
+        </div>
+    </section>
+
+    <section class="repo-overview-section">
+        <h2><i class="fab fa-github"></i> Repository Overzicht</h2>
+        <div class="repo-cards">
+            {% for repo in repositories %}
+            <div class="repo-card">
+                <div class="repo-header">
+                    <h3>{{ repo.name }}</h3>
                     <span class="status-badge active">Actief</span>
                 </div>
-                <div class="status-card">
-                    <i class="fab fa-discord"></i>
-                    <h3>Discord Webhook</h3>
-                    <span class="status-badge active">Verbonden</span>
+                <div class="repo-details">
+                    <p><i class="fas fa-link"></i> {{ repo.url }}</p>
+                    <p><i class="fas fa-folder"></i> {{ repo.local_path }}</p>
                 </div>
-                <div class="status-card">
-                    <i class="fas fa-clock"></i>
-                    <h3>Laatste Sync</h3>
-                    <span id="last-sync">1 minuut geleden</span>
+                <div class="repo-stats">
+                    <div class="stat">
+                        <i class="fas fa-code-branch"></i>
+                        <span>Laatste update: <span class="sync-status">-</span></span>
+                    </div>
                 </div>
             </div>
-        </section>
+            {% endfor %}
+        </div>
+    </section>
+</div>
+{% endblock %}
 
-        <section class="repo-overview-section">
-            <h2><i class="fab fa-github"></i> Repository Overzicht</h2>
-            <div class="repo-cards">
-                {% for repo in repositories %}
-                <div class="repo-card">
-                    <div class="repo-header">
-                        <h3>{{ repo.name }}</h3>
-                        <span class="status-badge active">Actief</span>
-                    </div>
-                    <div class="repo-details">
-                        <p><i class="fas fa-link"></i> {{ repo.url }}</p>
-                        <p><i class="fas fa-folder"></i> {{ repo.local_path }}</p>
-                    </div>
-                    <div class="repo-stats">
-                        <div class="stat">
-                            <i class="fas fa-code-branch"></i>
-                            <span>Laatste update: 5 min geleden</span>
-                        </div>
-                    </div>
-                </div>
-                {% endfor %}
-            </div>
-        </section>
-    </div>
-
-    <script src="/static/dashboard.js"></script>
-</body>
-</html>
+{% block scripts %}
+<script src="/static/dashboard.js"></script>
+{% endblock %}
