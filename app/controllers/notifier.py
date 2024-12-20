@@ -1,8 +1,21 @@
 import requests
 import logging
 from datetime import datetime
+from typing import List, Dict, Union
 
-def create_embed(title, repository, action, files, status="success"):
+class DiscordNotificationError(Exception):
+    """Base exception for Discord notification errors"""
+    pass
+
+class WebhookConnectionError(DiscordNotificationError):
+    """Raised when connection to Discord webhook fails"""
+    pass
+
+class WebhookResponseError(DiscordNotificationError):
+    """Raised when Discord webhook returns an error response"""
+    pass
+
+def create_embed(title: str, repository: str, action: str, files: Union[List[str], str], status: str = "success") -> Dict:
     colors = {
         "success": 3066993,  # Groen
         "warning": 16776960,  # Geel
@@ -14,7 +27,7 @@ def create_embed(title, repository, action, files, status="success"):
     
     embed = {
         "title": title,
-        "color": colors[status],
+        "color": colors.get(status, colors["warning"]),
         "timestamp": datetime.utcnow().isoformat(),
         "fields": [
             {
@@ -42,78 +55,85 @@ def create_embed(title, repository, action, files, status="success"):
     
     return embed
 
-def send_notifications(webhook_url, updates):
+def extract_repo_name(update: str) -> str:
+    """Extracts repository name from update message"""
     try:
-        embeds = []
+        return update.split(":")[0].strip()
+    except (IndexError, AttributeError) as e:
+        logging.error(f"Fout bij extraheren repository naam: {e}")
+        return "Onbekende Repository"
+
+def send_notifications(webhook_url: str, updates: List[str]) -> None:
+    try:
+        if not updates:
+            return
+
+        # Extract repository name once
+        repo_name = extract_repo_name(updates[0])
         
-        # Sorteer updates per type
-        added_files = []
-        modified_files = []
-        deleted_files = []
-        repo_name = None
+        # Categorize updates
+        update_categories = {
+            "added": [],
+            "modified": [],
+            "deleted": []
+        }
         
         for update in updates:
-            repo_name = update.split(":")[0].strip()  # Haal repository naam uit de update
             if "new file" in update.lower():
-                added_files.append(update)
+                update_categories["added"].append(update)
             elif "deleted" in update.lower():
-                deleted_files.append(update)
+                update_categories["deleted"].append(update)
             else:
-                modified_files.append(update)
-        
-        # Maak embeds voor elk type update
-        if added_files:
-            embeds.append(create_embed(
-                "✨ Nieuwe Bestanden Toegevoegd",
-                repo_name,
-                "Toegevoegd",
-                added_files,
-                "added"
-            ))
-            
-        if modified_files:
-            embeds.append(create_embed(
-                "📝 Bestanden Gewijzigd",
-                repo_name,
-                "Geüpdatet",
-                modified_files,
-                "modified"
-            ))
-            
-        if deleted_files:
-            embeds.append(create_embed(
-                "🗑️ Bestanden Verwijderd",
-                repo_name,
-                "Verwijderd",
-                deleted_files,
-                "deleted"
-            ))
+                update_categories["modified"].append(update)
 
-        
+        embeds = []
+        category_configs = {
+            "added": ("✨ Nieuwe Bestanden Toegevoegd", "Toegevoegd", "added"),
+            "modified": ("📝 Bestanden Gewijzigd", "Geüpdatet", "modified"),
+            "deleted": ("🗑️ Bestanden Verwijderd", "Verwijderd", "deleted")
+        }
+
+        for category, files in update_categories.items():
+            if files:
+                title, action, status = category_configs[category]
+                embeds.append(create_embed(title, repo_name, action, files, status))
+
         if embeds:
-            payload = {"embeds": embeds}
-            response = requests.post(webhook_url, json=payload)
-            if response.status_code == 204:
-                logging.info("Discord notificatie succesvol verzonden")
-            else:
-                logging.warning(f"Discord notificatie verzenden gaf status code: {response.status_code}")
+            try:
+                response = requests.post(webhook_url, json={"embeds": embeds})
+                if response.status_code == 204:
+                    logging.info(f"Discord notificaties succesvol verzonden voor {repo_name}")
+                else:
+                    raise WebhookResponseError(f"Discord webhook gaf status code: {response.status_code}")
+            except requests.ConnectionError as e:
+                raise WebhookConnectionError(f"Kan geen verbinding maken met Discord webhook: {e}")
+            except requests.RequestException as e:
+                raise DiscordNotificationError(f"Algemene Discord notificatie fout: {e}")
+                
     except Exception as e:
-        logging.error(f"Fout bij verzenden Discord notificatie: {e}")
+        logging.error(f"Kritieke fout bij verzenden Discord notificaties: {str(e)}")
+        raise
 
-def send_notification(webhook_url, message, status="success"):
+def send_notification(webhook_url: str, message: str, status: str = "success") -> None:
     """Voor algemene status updates en foutmeldingen"""
     try:
-        embed = create_embed(
-            "GitHub Sync Status" if status == "success" else "⚠️ GitHub Sync Waarschuwing" if status == "warning" else "❌ GitHub Sync Fout",
-            "Systeem",
-            message,
-            status
-        )
-        payload = {"embeds": [embed]}
-        response = requests.post(webhook_url, json=payload)
-        if response.status_code == 204:
-            logging.info("Discord notificatie succesvol verzonden")
-        else:
-            logging.warning(f"Discord notificatie verzenden gaf status code: {response.status_code}")
+        title = {
+            "success": "GitHub Sync Status",
+            "warning": "⚠️ GitHub Sync Waarschuwing",
+            "error": "❌ GitHub Sync Fout"
+        }.get(status, "GitHub Sync Status")
+
+        embed = create_embed(title, "Systeem", status.capitalize(), message, status)
+        
+        try:
+            response = requests.post(webhook_url, json={"embeds": [embed]})
+            if response.status_code != 204:
+                raise WebhookResponseError(f"Discord webhook gaf status code: {response.status_code}")
+        except requests.ConnectionError as e:
+            raise WebhookConnectionError(f"Kan geen verbinding maken met Discord webhook: {e}")
+        except requests.RequestException as e:
+            raise DiscordNotificationError(f"Algemene Discord notificatie fout: {e}")
+            
     except Exception as e:
-        logging.error(f"Fout bij verzenden Discord notificatie: {e}")
+        logging.error(f"Kritieke fout bij verzenden Discord notificatie: {str(e)}")
+        raise

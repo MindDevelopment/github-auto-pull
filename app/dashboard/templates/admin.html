@@ -1,3 +1,4 @@
+<!-- app/dashboard/templates/admin.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -86,97 +87,6 @@
         </section>
     </div>
 
-    <!-- Modal voor toevoegen/bewerken repository -->
-    <div id="repo-modal" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3 id="modal-title">Add Repository</h3>
-                <span class="close">&times;</span>
-            </div>
-            <form id="repo-form">
-                <div class="input-group">
-                    <label>Name</label>
-                    <input type="text" id="repo-name" required>
-                </div>
-                <div class="input-group">
-                    <label>GitHub URL</label>
-                    <input type="text" id="repo-url" required>
-                </div>
-                <div class="input-group">
-                    <label>Local Path</label>
-                    <input type="text" id="repo-path" required>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="cancel-btn" onclick="closeModal()">Cancel</button>
-                    <button type="submit" class="save-btn">Save</button>
-                </div>
-            </form>
-        </div>
-    </div>
-
-    <script>
-        // Modal functionaliteit
-        const modal = document.getElementById('repo-modal');
-        const span = document.getElementsByClassName('close')[0];
-
-        function showAddRepoForm() {
-            document.getElementById('modal-title').textContent = 'Add Repository';
-            document.getElementById('repo-form').reset();
-            modal.style.display = 'block';
-        }
-
-        function closeModal() {
-            modal.style.display = 'none';
-        }
-
-        span.onclick = closeModal;
-        window.onclick = (event) => {
-            if (event.target == modal) closeModal();
-        }
-
-        // Repository management
-        async function deleteRepo(name) {
-            if (confirm('Are you sure you want to delete this repository?')) {
-                try {
-                    const response = await fetch('/api/repo', {
-                        method: 'DELETE',
-                        headers: {'Content-Type': 'application/json'},
-                        body: JSON.stringify({name})
-                    });
-                    if (response.ok) location.reload();
-                } catch (error) {
-                    console.error('Error:', error);
-                    alert('Failed to delete repository');
-                }
-            }
-        }
-
-        function editRepo(name) {
-            // Implementatie voor het bewerken van een repository
-            document.getElementById('modal-title').textContent = 'Edit Repository';
-            // Vul form met repository data
-            modal.style.display = 'block';
-        }
-
-        // Webhook update
-        document.getElementById('webhook-form').onsubmit = async (e) => {
-            e.preventDefault();
-            try {
-                const response = await fetch('/api/webhook', {
-                    method: 'PUT',
-                    headers: {'Content-Type': 'application/json'},
-                    body: JSON.stringify({
-                        webhook: document.getElementById('webhook-url').value
-                    })
-                });
-                if (response.ok) {
-                    alert('Webhook updated successfully');
-                }
-            } catch (error) {
-                console.error('Error:', error);
-                alert('Failed to update webhook');
-            }
-        };
-    </script>
+    <script src="/static/admin.js"></script>
 </body>
 </html>
