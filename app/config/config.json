@@ -15,7 +15,7 @@
     },
     "sync_status": {
         "last_sync_times": {
-            "github-auto-pull": "2024-12-20T23:02:33.116900"
+            "github-auto-pull": "2024-12-20T23:16:18.865281"
         },
         "sync_errors": {
             "github-auto-pull": [
@@ -31,8 +31,8 @@
         },
         "sync_statistics": {
             "github-auto-pull": {
-                "total_syncs": 2,
-                "successful_syncs": 0,
+                "total_syncs": 3,
+                "successful_syncs": 1,
                 "failed_syncs": 2
             }
         }
