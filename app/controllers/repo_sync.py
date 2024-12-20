@@ -1,46 +1,34 @@
-import os
-import subprocess
 import logging
+import subprocess
+from contextlib import contextmanager
+
+@contextmanager
+def temporary_logging_suspension():
+    """Schakel logging tijdelijk uit om file lock issues te voorkomen."""
+    handlers = logging.root.handlers[:]
+    for handler in handlers:
+        logging.root.removeHandler(handler)
+    try:
+        yield
+    finally:
+        for handler in handlers:
+            logging.root.addHandler(handler)
 
 def sync_repositories(repositories):
-    updates = []
     for repo in repositories:
+        repo_name = repo['name']
         local_path = repo['local_path']
-        url = repo['url']
-        
+
+        logging.info(f"Pullen voor {repo_name}")
         try:
-            if not os.path.exists(local_path):
-                logging.info(f"Cloning {repo['name']} naar {local_path}")
-                subprocess.run(['git', 'clone', url, local_path], check=True)
-                updates.append(f"{repo['name']}: Nieuwe repository gekloond")
-            else:
-                logging.info(f"Pullen voor {repo['name']}")
-                # Reset lokale wijzigingen voor de pull
+            # Schakel logging tijdelijk uit
+            with temporary_logging_suspension():
                 subprocess.run(['git', '-C', local_path, 'reset', '--hard'], check=True)
-                subprocess.run(['git', '-C', local_path, 'clean', '-fd'], check=True)
-                
-                # Haal eerst de huidige status op
-                subprocess.run(['git', '-C', local_path, 'fetch'], check=True)
-                result = subprocess.run(['git', '-C', local_path, 'diff', '--name-status', 'HEAD..origin/main'], 
-                                     capture_output=True, text=True)
-                
-                if result.stdout.strip():
-                    # Voer de pull uit
-                    subprocess.run(['git', '-C', local_path, 'pull'], check=True)
-                    
-                    # Verwerk de veranderingen
-                    for line in result.stdout.splitlines():
-                        status, file = line.split('\t', 1)
-                        if status == 'A':
-                            updates.append(f"{repo['name']}: New file {file}")
-                        elif status == 'M':
-                            updates.append(f"{repo['name']}: Modified {file}")
-                        elif status == 'D':
-                            updates.append(f"{repo['name']}: Deleted {file}")
-        
+                subprocess.run(['git', '-C', local_path, 'pull'], check=True)
+            
+            logging.info(f"Repository {repo_name} succesvol gesynchroniseerd.")
+            return {"repo_name": repo_name, "status": "success"}
         except subprocess.CalledProcessError as e:
-            error_msg = f"Git error in {repo['name']}: {str(e)}"
-            logging.error(error_msg)
-            raise Exception(error_msg)
-    
-    return updates
+            error_message = f"Git error in {repo_name}: {str(e)}"
+            logging.error(error_message)
+            raise Exception(error_message)
