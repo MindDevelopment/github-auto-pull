@@ -8,8 +8,10 @@ from datetime import datetime
 from controllers.repo_sync import sync_repositories
 from controllers.notifier import send_notification, send_notifications
 
-CONFIG_FILE = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'app', 'config', 'config.json')
-
+# Laad configuratie
+with open('app/config/config.json') as f:
+    config = json.load(f)
+    
 # Configureer logging met meer details
 def setup_logging(log_file):
     # Zorg ervoor dat de log directory bestaat
