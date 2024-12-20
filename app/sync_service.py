@@ -9,6 +9,9 @@ from filelock import FileLock
 from controllers.repo_sync import sync_repositories
 from controllers.notifier import send_notification, send_notifications
 
+# Aan het begin van sync_service.py toevoegen
+os.makedirs('logs', exist_ok=True)
+
 # Absoluut pad naar de configuratie
 CONFIG_FILE = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'config', 'config.json')
 
@@ -25,6 +28,7 @@ def setup_logging(log_file):
             if hasattr(handler, 'close'):
                 handler.close()
             logging.root.removeHandler(handler)
+
 
         logging.basicConfig(
             filename=log_file,
@@ -141,20 +145,17 @@ def main():
                 for repo in config['repositories']:
                     try:
                         updates = sync_repositories([repo])
-
                         if updates:
                             update_sync_status(repo['name'], 'success')
                             send_notifications(config['discord_webhook'], updates)
                         else:
                             update_sync_status(repo['name'], 'success')
                             logging.info(f"No updates for {repo['name']}")
-
                     except Exception as repo_error:
                         error_msg = f"Error syncing {repo['name']}: {str(repo_error)}"
                         logging.error(error_msg)
                         update_sync_status(repo['name'], 'error', repo_error)
                         send_notification(config['discord_webhook'], error_msg, "error")
-
                 last_sync_time = current_time
 
                 logging.info(f"Waiting {config['sync_interval']} seconds until next sync")
