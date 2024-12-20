@@ -147,7 +147,6 @@ def main():
                 for repo in config['repositories']:
                     try:
                         updates = sync_repositories([repo])
-
                         if updates:
                             update_sync_status(repo['name'], 'success')
                             send_notifications(config['discord_webhook'], updates)
