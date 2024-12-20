@@ -8328,3 +8328,456 @@ Traceback (most recent call last):
   File "C:\Python312\Lib\subprocess.py", line 571, in run
     raise CalledProcessError(retcode, process.args,
 subprocess.CalledProcessError: Command '['git', '-C', 'C:/Users/Administrator/Desktop/Github/github-auto-pull', 'pull']' returned non-zero exit status 1.
+2024-12-20 19:07:20 [INFO] - Starting sync #7
+2024-12-20 19:07:20 [INFO] - Time since last sync: 0:01:25.089134
+2024-12-20 19:07:20 [INFO] - Pullen voor github-auto-pull
+2024-12-20 19:07:21 [INFO] - Pullen voor portfolio
+2024-12-20 19:07:23 [INFO] - No updates found
+2024-12-20 19:07:23 [INFO] - Waiting 10 seconds until next sync
+2024-12-20 19:07:33 [INFO] - Starting sync #8
+2024-12-20 19:07:33 [INFO] - Time since last sync: 0:00:13.144760
+2024-12-20 19:07:33 [INFO] - Pullen voor github-auto-pull
+2024-12-20 19:07:34 [INFO] - Pullen voor portfolio
+2024-12-20 19:07:36 [INFO] - No updates found
+2024-12-20 19:07:36 [INFO] - Waiting 10 seconds until next sync
+2024-12-20 19:07:46 [INFO] - Starting sync #9
+2024-12-20 19:07:46 [INFO] - Time since last sync: 0:00:12.899228
+2024-12-20 19:07:46 [INFO] - Pullen voor github-auto-pull
+2024-12-20 19:07:47 [INFO] - Pullen voor portfolio
+2024-12-20 19:07:49 [INFO] - No updates found
+2024-12-20 19:07:49 [INFO] - Waiting 10 seconds until next sync
+2024-12-20 19:07:59 [INFO] - Starting sync #10
+2024-12-20 19:07:59 [INFO] - Time since last sync: 0:00:12.856445
+2024-12-20 19:07:59 [INFO] - Pullen voor github-auto-pull
+2024-12-20 19:08:01 [INFO] - Pullen voor portfolio
+2024-12-20 19:08:03 [INFO] - Found 1 updates
+2024-12-20 19:08:04 [INFO] - Discord notificaties succesvol verzonden voor github-auto-pull
+2024-12-20 19:08:04 [INFO] - Waiting 10 seconds until next sync
+2024-12-20 19:08:14 [INFO] - Starting sync #11
+2024-12-20 19:08:14 [INFO] - Time since last sync: 0:00:15.418359
+2024-12-20 19:08:14 [INFO] - Pullen voor github-auto-pull
+2024-12-20 19:08:15 [INFO] - Pullen voor portfolio
+2024-12-20 19:08:17 [INFO] - No updates found
+2024-12-20 19:08:17 [INFO] - Waiting 10 seconds until next sync
+2024-12-20 19:08:27 [INFO] - Starting sync #12
+2024-12-20 19:08:27 [INFO] - Time since last sync: 0:00:12.955088
+2024-12-20 19:08:27 [INFO] - Pullen voor github-auto-pull
+2024-12-20 19:08:28 [INFO] - Pullen voor portfolio
+2024-12-20 19:08:30 [INFO] - No updates found
+2024-12-20 19:08:30 [INFO] - Waiting 10 seconds until next sync
+2024-12-20 19:08:40 [INFO] - Starting sync #13
+2024-12-20 19:08:40 [INFO] - Time since last sync: 0:00:13.186595
+2024-12-20 19:08:40 [INFO] - Pullen voor github-auto-pull
+2024-12-20 19:08:41 [INFO] - Pullen voor portfolio
+2024-12-20 19:08:43 [INFO] - No updates found
+2024-12-20 19:08:43 [INFO] - Waiting 10 seconds until next sync
+2024-12-20 19:08:53 [INFO] - Starting sync #14
+2024-12-20 19:08:53 [INFO] - Time since last sync: 0:00:12.834948
+2024-12-20 19:08:53 [INFO] - Pullen voor github-auto-pull
+2024-12-20 19:08:54 [INFO] - Pullen voor portfolio
+2024-12-20 19:08:56 [INFO] - No updates found
+2024-12-20 19:08:56 [INFO] - Waiting 10 seconds until next sync
+2024-12-20 19:09:06 [INFO] - Starting sync #15
+2024-12-20 19:09:06 [INFO] - Time since last sync: 0:00:12.913864
+2024-12-20 19:09:06 [INFO] - Pullen voor github-auto-pull
+2024-12-20 19:09:07 [INFO] - Pullen voor portfolio
+2024-12-20 19:09:09 [INFO] - No updates found
+2024-12-20 19:09:09 [INFO] - Waiting 10 seconds until next sync
+2024-12-20 19:09:19 [INFO] - Starting sync #16
+2024-12-20 19:09:19 [INFO] - Time since last sync: 0:00:12.748480
+2024-12-20 19:09:19 [INFO] - Pullen voor github-auto-pull
+2024-12-20 19:09:20 [INFO] - Pullen voor portfolio
+2024-12-20 19:09:22 [INFO] - No updates found
+2024-12-20 19:09:22 [INFO] - Waiting 10 seconds until next sync
+2024-12-20 19:09:32 [INFO] - Starting sync #17
+2024-12-20 19:09:32 [INFO] - Time since last sync: 0:00:12.868149
+2024-12-20 19:09:32 [INFO] - Pullen voor github-auto-pull
+2024-12-20 19:09:32 [INFO] - Pullen voor portfolio
+2024-12-20 19:09:34 [INFO] - No updates found
+2024-12-20 19:09:34 [INFO] - Waiting 10 seconds until next sync
+2024-12-20 19:09:44 [INFO] - Starting sync #18
+2024-12-20 19:09:44 [INFO] - Time since last sync: 0:00:12.911984
+2024-12-20 19:09:44 [INFO] - Pullen voor github-auto-pull
+2024-12-20 19:09:45 [INFO] - Pullen voor portfolio
+2024-12-20 19:09:47 [INFO] - No updates found
+2024-12-20 19:09:47 [INFO] - Waiting 10 seconds until next sync
+2024-12-20 19:09:57 [INFO] - Starting sync #19
+2024-12-20 19:09:57 [INFO] - Time since last sync: 0:00:12.709005
+2024-12-20 19:09:57 [INFO] - Pullen voor github-auto-pull
+2024-12-20 19:09:58 [INFO] - Pullen voor portfolio
+2024-12-20 19:10:00 [INFO] - No updates found
+2024-12-20 19:10:00 [INFO] - Waiting 10 seconds until next sync
+2024-12-20 19:10:10 [INFO] - Starting sync #20
+2024-12-20 19:10:10 [INFO] - Time since last sync: 0:00:12.799784
+2024-12-20 19:10:10 [INFO] - Pullen voor github-auto-pull
+2024-12-20 19:10:11 [INFO] - Pullen voor portfolio
+2024-12-20 19:10:13 [INFO] - No updates found
+2024-12-20 19:10:13 [INFO] - Waiting 10 seconds until next sync
+2024-12-20 19:10:23 [INFO] - Starting sync #21
+2024-12-20 19:10:23 [INFO] - Time since last sync: 0:00:12.910093
+2024-12-20 19:10:23 [INFO] - Pullen voor github-auto-pull
+2024-12-20 19:10:24 [INFO] - Pullen voor portfolio
+2024-12-20 19:10:26 [INFO] - No updates found
+2024-12-20 19:10:26 [INFO] - Waiting 10 seconds until next sync
+2024-12-20 19:10:36 [INFO] - Starting sync #22
+2024-12-20 19:10:36 [INFO] - Time since last sync: 0:00:12.848295
+2024-12-20 19:10:36 [INFO] - Pullen voor github-auto-pull
+2024-12-20 19:10:37 [INFO] - Pullen voor portfolio
+2024-12-20 19:10:39 [INFO] - No updates found
+2024-12-20 19:10:39 [INFO] - Waiting 10 seconds until next sync
+2024-12-20 19:10:49 [INFO] - Starting sync #23
+2024-12-20 19:10:49 [INFO] - Time since last sync: 0:00:12.907022
+2024-12-20 19:10:49 [INFO] - Pullen voor github-auto-pull
+2024-12-20 19:10:49 [INFO] - Pullen voor portfolio
+2024-12-20 19:10:51 [INFO] - No updates found
+2024-12-20 19:10:51 [INFO] - Waiting 10 seconds until next sync
+2024-12-20 19:11:01 [INFO] - Starting sync #24
+2024-12-20 19:11:01 [INFO] - Time since last sync: 0:00:12.746607
+2024-12-20 19:11:01 [INFO] - Pullen voor github-auto-pull
+2024-12-20 19:11:02 [INFO] - Pullen voor portfolio
+2024-12-20 19:11:04 [INFO] - No updates found
+2024-12-20 19:11:04 [INFO] - Waiting 10 seconds until next sync
+2024-12-20 19:11:14 [INFO] - Starting sync #25
+2024-12-20 19:11:14 [INFO] - Time since last sync: 0:00:12.906234
+2024-12-20 19:11:14 [INFO] - Pullen voor github-auto-pull
+2024-12-20 19:11:15 [INFO] - Pullen voor portfolio
+2024-12-20 19:11:17 [INFO] - No updates found
+2024-12-20 19:11:17 [INFO] - Waiting 10 seconds until next sync
+2024-12-20 19:11:27 [INFO] - Starting sync #26
+2024-12-20 19:11:27 [INFO] - Time since last sync: 0:00:12.745870
+2024-12-20 19:11:27 [INFO] - Pullen voor github-auto-pull
+2024-12-20 19:11:28 [INFO] - Pullen voor portfolio
+2024-12-20 19:11:30 [INFO] - No updates found
+2024-12-20 19:11:30 [INFO] - Waiting 10 seconds until next sync
+2024-12-20 19:11:40 [INFO] - Starting sync #27
+2024-12-20 19:11:40 [INFO] - Time since last sync: 0:00:12.955928
+2024-12-20 19:11:40 [INFO] - Pullen voor github-auto-pull
+2024-12-20 19:11:41 [INFO] - Pullen voor portfolio
+2024-12-20 19:11:43 [INFO] - No updates found
+2024-12-20 19:11:43 [INFO] - Waiting 10 seconds until next sync
+2024-12-20 19:11:53 [INFO] - Starting sync #28
+2024-12-20 19:11:53 [INFO] - Time since last sync: 0:00:12.782784
+2024-12-20 19:11:53 [INFO] - Pullen voor github-auto-pull
+2024-12-20 19:11:55 [INFO] - Pullen voor portfolio
+2024-12-20 19:11:57 [INFO] - Found 4 updates
+2024-12-20 19:11:58 [INFO] - Discord notificaties succesvol verzonden voor github-auto-pull
+2024-12-20 19:11:58 [INFO] - Waiting 10 seconds until next sync
+2024-12-20 19:12:08 [INFO] - Starting sync #29
+2024-12-20 19:12:08 [INFO] - Time since last sync: 0:00:14.845447
+2024-12-20 19:12:08 [INFO] - Pullen voor github-auto-pull
+2024-12-20 19:12:09 [INFO] - Pullen voor portfolio
+2024-12-20 19:12:11 [INFO] - No updates found
+2024-12-20 19:12:11 [INFO] - Waiting 10 seconds until next sync
+2024-12-20 19:12:21 [INFO] - Starting sync #30
+2024-12-20 19:12:21 [INFO] - Time since last sync: 0:00:13.038474
+2024-12-20 19:12:21 [INFO] - Pullen voor github-auto-pull
+2024-12-20 19:12:21 [INFO] - Pullen voor portfolio
+2024-12-20 19:12:23 [INFO] - No updates found
+2024-12-20 19:12:23 [INFO] - Waiting 10 seconds until next sync
+2024-12-20 19:12:33 [INFO] - Starting sync #31
+2024-12-20 19:12:33 [INFO] - Time since last sync: 0:00:12.655172
+2024-12-20 19:12:33 [INFO] - Pullen voor github-auto-pull
+2024-12-20 19:12:34 [INFO] - Pullen voor portfolio
+2024-12-20 19:12:36 [INFO] - No updates found
+2024-12-20 19:12:36 [INFO] - Waiting 10 seconds until next sync
+2024-12-20 19:12:46 [INFO] - Starting sync #32
+2024-12-20 19:12:46 [INFO] - Time since last sync: 0:00:12.681551
+2024-12-20 19:12:46 [INFO] - Pullen voor github-auto-pull
+2024-12-20 19:12:47 [INFO] - Pullen voor portfolio
+2024-12-20 19:12:49 [INFO] - No updates found
+2024-12-20 19:12:49 [INFO] - Waiting 10 seconds until next sync
+2024-12-20 19:12:59 [INFO] - Starting sync #33
+2024-12-20 19:12:59 [INFO] - Time since last sync: 0:00:12.912169
+2024-12-20 19:12:59 [INFO] - Pullen voor github-auto-pull
+2024-12-20 19:13:00 [INFO] - Pullen voor portfolio
+2024-12-20 19:13:02 [INFO] - No updates found
+2024-12-20 19:13:02 [INFO] - Waiting 10 seconds until next sync
+2024-12-20 19:13:12 [INFO] - Starting sync #34
+2024-12-20 19:13:12 [INFO] - Time since last sync: 0:00:13.067405
+2024-12-20 19:13:12 [INFO] - Pullen voor github-auto-pull
+2024-12-20 19:13:13 [INFO] - Pullen voor portfolio
+2024-12-20 19:13:15 [INFO] - No updates found
+2024-12-20 19:13:15 [INFO] - Waiting 10 seconds until next sync
+2024-12-20 19:13:25 [INFO] - Starting sync #35
+2024-12-20 19:13:25 [INFO] - Time since last sync: 0:00:12.913929
+2024-12-20 19:13:25 [INFO] - Pullen voor github-auto-pull
+2024-12-20 19:13:26 [INFO] - Pullen voor portfolio
+2024-12-20 19:13:28 [INFO] - No updates found
+2024-12-20 19:13:28 [INFO] - Waiting 10 seconds until next sync
+2024-12-20 19:13:38 [INFO] - Starting sync #36
+2024-12-20 19:13:38 [INFO] - Time since last sync: 0:00:12.799940
+2024-12-20 19:13:38 [INFO] - Pullen voor github-auto-pull
+2024-12-20 19:13:39 [INFO] - Pullen voor portfolio
+2024-12-20 19:13:41 [INFO] - No updates found
+2024-12-20 19:13:41 [INFO] - Waiting 10 seconds until next sync
+2024-12-20 19:13:51 [INFO] - Starting sync #37
+2024-12-20 19:13:51 [INFO] - Time since last sync: 0:00:13.139705
+2024-12-20 19:13:51 [INFO] - Pullen voor github-auto-pull
+2024-12-20 19:13:52 [INFO] - Pullen voor portfolio
+2024-12-20 19:13:54 [INFO] - No updates found
+2024-12-20 19:13:54 [INFO] - Waiting 10 seconds until next sync
+2024-12-20 19:14:04 [INFO] - Starting sync #38
+2024-12-20 19:14:04 [INFO] - Time since last sync: 0:00:13.070020
+2024-12-20 19:14:04 [INFO] - Pullen voor github-auto-pull
+2024-12-20 19:14:05 [INFO] - Pullen voor portfolio
+2024-12-20 19:14:07 [INFO] - No updates found
+2024-12-20 19:14:07 [INFO] - Waiting 10 seconds until next sync
+2024-12-20 19:14:17 [INFO] - Starting sync #39
+2024-12-20 19:14:17 [INFO] - Time since last sync: 0:00:12.896861
+2024-12-20 19:14:17 [INFO] - Pullen voor github-auto-pull
+2024-12-20 19:14:18 [INFO] - Pullen voor portfolio
+2024-12-20 19:14:20 [INFO] - No updates found
+2024-12-20 19:14:20 [INFO] - Waiting 10 seconds until next sync
+2024-12-20 19:14:30 [INFO] - Starting sync #40
+2024-12-20 19:14:30 [INFO] - Time since last sync: 0:00:12.743227
+2024-12-20 19:14:30 [INFO] - Pullen voor github-auto-pull
+2024-12-20 19:14:30 [INFO] - Pullen voor portfolio
+2024-12-20 19:14:32 [INFO] - No updates found
+2024-12-20 19:14:32 [INFO] - Waiting 10 seconds until next sync
+2024-12-20 19:14:42 [INFO] - Starting sync #41
+2024-12-20 19:14:42 [INFO] - Time since last sync: 0:00:12.815293
+2024-12-20 19:14:42 [INFO] - Pullen voor github-auto-pull
+2024-12-20 19:14:43 [INFO] - Pullen voor portfolio
+2024-12-20 19:14:45 [INFO] - No updates found
+2024-12-20 19:14:45 [INFO] - Waiting 10 seconds until next sync
+2024-12-20 19:14:55 [INFO] - Starting sync #42
+2024-12-20 19:14:55 [INFO] - Time since last sync: 0:00:12.712348
+2024-12-20 19:14:55 [INFO] - Pullen voor github-auto-pull
+2024-12-20 19:14:56 [INFO] - Pullen voor portfolio
+2024-12-20 19:14:58 [INFO] - No updates found
+2024-12-20 19:14:58 [INFO] - Waiting 10 seconds until next sync
+2024-12-20 19:15:08 [INFO] - Starting sync #43
+2024-12-20 19:15:08 [INFO] - Time since last sync: 0:00:12.724160
+2024-12-20 19:15:08 [INFO] - Pullen voor github-auto-pull
+2024-12-20 19:15:09 [INFO] - Pullen voor portfolio
+2024-12-20 19:15:10 [INFO] - No updates found
+2024-12-20 19:15:10 [INFO] - Waiting 10 seconds until next sync
+2024-12-20 19:15:21 [INFO] - Starting sync #44
+2024-12-20 19:15:21 [INFO] - Time since last sync: 0:00:12.723679
+2024-12-20 19:15:21 [INFO] - Pullen voor github-auto-pull
+2024-12-20 19:15:21 [INFO] - Pullen voor portfolio
+2024-12-20 19:15:23 [INFO] - No updates found
+2024-12-20 19:15:23 [INFO] - Waiting 10 seconds until next sync
+2024-12-20 19:15:33 [INFO] - Starting sync #45
+2024-12-20 19:15:33 [INFO] - Time since last sync: 0:00:12.682523
+2024-12-20 19:15:33 [INFO] - Pullen voor github-auto-pull
+2024-12-20 19:15:34 [INFO] - Pullen voor portfolio
+2024-12-20 19:15:36 [INFO] - No updates found
+2024-12-20 19:15:36 [INFO] - Waiting 10 seconds until next sync
+2024-12-20 19:15:46 [INFO] - Starting sync #46
+2024-12-20 19:15:46 [INFO] - Time since last sync: 0:00:12.797059
+2024-12-20 19:15:46 [INFO] - Pullen voor github-auto-pull
+2024-12-20 19:15:47 [INFO] - Pullen voor portfolio
+2024-12-20 19:15:49 [INFO] - No updates found
+2024-12-20 19:15:49 [INFO] - Waiting 10 seconds until next sync
+2024-12-20 19:15:59 [INFO] - Starting sync #47
+2024-12-20 19:15:59 [INFO] - Time since last sync: 0:00:12.835314
+2024-12-20 19:15:59 [INFO] - Pullen voor github-auto-pull
+2024-12-20 19:16:01 [INFO] - Pullen voor portfolio
+2024-12-20 19:16:03 [INFO] - Found 1 updates
+2024-12-20 19:16:04 [INFO] - Discord notificaties succesvol verzonden voor github-auto-pull
+2024-12-20 19:16:04 [INFO] - Waiting 10 seconds until next sync
+2024-12-20 19:16:14 [INFO] - Starting sync #48
+2024-12-20 19:16:14 [INFO] - Time since last sync: 0:00:15.235243
+2024-12-20 19:16:14 [INFO] - Pullen voor github-auto-pull
+2024-12-20 19:16:15 [INFO] - Pullen voor portfolio
+2024-12-20 19:16:17 [INFO] - No updates found
+2024-12-20 19:16:17 [INFO] - Waiting 10 seconds until next sync
+2024-12-20 19:16:27 [INFO] - Starting sync #49
+2024-12-20 19:16:27 [INFO] - Time since last sync: 0:00:13.086884
+2024-12-20 19:16:27 [INFO] - Pullen voor github-auto-pull
+2024-12-20 19:16:28 [INFO] - Pullen voor portfolio
+2024-12-20 19:16:30 [INFO] - No updates found
+2024-12-20 19:16:30 [INFO] - Waiting 10 seconds until next sync
+2024-12-20 19:16:40 [INFO] - Starting sync #50
+2024-12-20 19:16:40 [INFO] - Time since last sync: 0:00:12.950358
+2024-12-20 19:16:40 [INFO] - Pullen voor github-auto-pull
+2024-12-20 19:16:41 [INFO] - Pullen voor portfolio
+2024-12-20 19:16:43 [INFO] - No updates found
+2024-12-20 19:16:43 [INFO] - Waiting 10 seconds until next sync
+2024-12-20 19:16:53 [INFO] - Starting sync #51
+2024-12-20 19:16:53 [INFO] - Time since last sync: 0:00:12.851915
+2024-12-20 19:16:53 [INFO] - Pullen voor github-auto-pull
+2024-12-20 19:16:54 [INFO] - Pullen voor portfolio
+2024-12-20 19:16:56 [INFO] - No updates found
+2024-12-20 19:16:56 [INFO] - Waiting 10 seconds until next sync
+2024-12-20 19:17:06 [INFO] - Starting sync #52
+2024-12-20 19:17:06 [INFO] - Time since last sync: 0:00:13.017749
+2024-12-20 19:17:06 [INFO] - Pullen voor github-auto-pull
+2024-12-20 19:17:07 [INFO] - Pullen voor portfolio
+2024-12-20 19:17:09 [INFO] - No updates found
+2024-12-20 19:17:09 [INFO] - Waiting 10 seconds until next sync
+2024-12-20 19:17:19 [INFO] - Starting sync #53
+2024-12-20 19:17:19 [INFO] - Time since last sync: 0:00:12.905348
+2024-12-20 19:17:19 [INFO] - Pullen voor github-auto-pull
+2024-12-20 19:17:20 [INFO] - Pullen voor portfolio
+2024-12-20 19:17:22 [INFO] - No updates found
+2024-12-20 19:17:22 [INFO] - Waiting 10 seconds until next sync
+2024-12-20 19:17:32 [INFO] - Starting sync #54
+2024-12-20 19:17:32 [INFO] - Time since last sync: 0:00:12.876873
+2024-12-20 19:17:32 [INFO] - Pullen voor github-auto-pull
+2024-12-20 19:17:33 [INFO] - Pullen voor portfolio
+2024-12-20 19:17:35 [INFO] - No updates found
+2024-12-20 19:17:35 [INFO] - Waiting 10 seconds until next sync
+2024-12-20 19:17:45 [INFO] - Starting sync #55
+2024-12-20 19:17:45 [INFO] - Time since last sync: 0:00:12.780610
+2024-12-20 19:17:45 [INFO] - Pullen voor github-auto-pull
+2024-12-20 19:17:47 [INFO] - Pullen voor portfolio
+2024-12-20 19:17:49 [INFO] - Found 1 updates
+2024-12-20 19:17:50 [INFO] - Discord notificaties succesvol verzonden voor github-auto-pull
+2024-12-20 19:17:50 [INFO] - Waiting 10 seconds until next sync
+2024-12-20 19:18:00 [INFO] - Starting sync #56
+2024-12-20 19:18:00 [INFO] - Time since last sync: 0:00:15.024717
+2024-12-20 19:18:00 [INFO] - Pullen voor github-auto-pull
+2024-12-20 19:18:01 [INFO] - Pullen voor portfolio
+2024-12-20 19:18:03 [INFO] - No updates found
+2024-12-20 19:18:03 [INFO] - Waiting 10 seconds until next sync
+2024-12-20 19:18:13 [INFO] - Starting sync #57
+2024-12-20 19:18:13 [INFO] - Time since last sync: 0:00:13.111103
+2024-12-20 19:18:13 [INFO] - Pullen voor github-auto-pull
+2024-12-20 19:18:14 [INFO] - Pullen voor portfolio
+2024-12-20 19:18:16 [INFO] - No updates found
+2024-12-20 19:18:16 [INFO] - Waiting 10 seconds until next sync
+2024-12-20 19:18:26 [INFO] - Starting sync #58
+2024-12-20 19:18:26 [INFO] - Time since last sync: 0:00:13.438783
+2024-12-20 19:18:26 [INFO] - Pullen voor github-auto-pull
+2024-12-20 19:18:27 [INFO] - Pullen voor portfolio
+2024-12-20 19:18:29 [INFO] - No updates found
+2024-12-20 19:18:29 [INFO] - Waiting 10 seconds until next sync
+2024-12-20 19:18:36 [INFO] - ==================================================
+2024-12-20 19:18:36 [INFO] - Starting GitHub Auto Pull Service
+2024-12-20 19:18:36 [INFO] - Configuration loaded: 2 repositories configured
+2024-12-20 19:18:36 [INFO] - Sync interval: 10 seconds
+2024-12-20 19:18:37 [INFO] - Starting sync #1
+2024-12-20 19:18:37 [INFO] - Pullen voor github-auto-pull
+2024-12-20 19:18:39 [INFO] - Starting sync #59
+2024-12-20 19:18:39 [INFO] - Time since last sync: 0:00:13.001906
+2024-12-20 19:18:39 [INFO] - Pullen voor github-auto-pull
+2024-12-20 19:18:40 [INFO] - Pullen voor portfolio
+2024-12-20 19:18:42 [INFO] - No updates found
+2024-12-20 19:18:42 [INFO] - Waiting 10 seconds until next sync
+2024-12-20 19:18:48 [ERROR] - Git error in github-auto-pull: Command '['git', '-C', 'C:/Users/Administrator/Desktop/Github/github-auto-pull', 'reset', '--hard']' returned non-zero exit status 128.
+2024-12-20 19:18:48 [ERROR] - Error syncing github-auto-pull: Git error in github-auto-pull: Command '['git', '-C', 'C:/Users/Administrator/Desktop/Github/github-auto-pull', 'reset', '--hard']' returned non-zero exit status 128.
+2024-12-20 19:18:48 [ERROR] - Error during sync #1: name 'CONFIG_FILE' is not defined
+Traceback (most recent call last):
+  File "C:\Users\Administrator\Desktop\Github\github-auto-pull\app\controllers\repo_sync.py", line 19, in sync_repositories
+    subprocess.run(['git', '-C', local_path, 'reset', '--hard'], check=True)
+  File "C:\Python312\Lib\subprocess.py", line 571, in run
+    raise CalledProcessError(retcode, process.args,
+subprocess.CalledProcessError: Command '['git', '-C', 'C:/Users/Administrator/Desktop/Github/github-auto-pull', 'reset', '--hard']' returned non-zero exit status 128.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\Administrator\Desktop\Github\github-auto-pull\app\sync_service.py", line 130, in main
+    updates = sync_repositories([repo])
+              ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Administrator\Desktop\Github\github-auto-pull\app\controllers\repo_sync.py", line 44, in sync_repositories
+    raise Exception(error_msg)
+Exception: Git error in github-auto-pull: Command '['git', '-C', 'C:/Users/Administrator/Desktop/Github/github-auto-pull', 'reset', '--hard']' returned non-zero exit status 128.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\Administrator\Desktop\Github\github-auto-pull\app\sync_service.py", line 143, in main
+    update_sync_status(repo['name'], 'error', repo_error)
+  File "C:\Users\Administrator\Desktop\Github\github-auto-pull\app\sync_service.py", line 55, in update_sync_status
+    with open(CONFIG_FILE) as f:
+              ^^^^^^^^^^^
+NameError: name 'CONFIG_FILE' is not defined
+2024-12-20 19:18:52 [INFO] - Starting sync #60
+2024-12-20 19:18:52 [INFO] - Time since last sync: 0:00:12.998602
+2024-12-20 19:18:52 [INFO] - Pullen voor github-auto-pull
+2024-12-20 19:18:53 [INFO] - Pullen voor portfolio
+2024-12-20 19:18:55 [INFO] - No updates found
+2024-12-20 19:18:55 [INFO] - Waiting 10 seconds until next sync
+2024-12-20 19:19:05 [INFO] - Starting sync #61
+2024-12-20 19:19:05 [INFO] - Time since last sync: 0:00:12.882187
+2024-12-20 19:19:05 [INFO] - Pullen voor github-auto-pull
+2024-12-20 19:19:06 [INFO] - Pullen voor portfolio
+2024-12-20 19:19:08 [INFO] - No updates found
+2024-12-20 19:19:08 [INFO] - Waiting 10 seconds until next sync
+2024-12-20 19:19:18 [INFO] - Starting sync #62
+2024-12-20 19:19:18 [INFO] - Time since last sync: 0:00:12.785116
+2024-12-20 19:19:18 [INFO] - Pullen voor github-auto-pull
+2024-12-20 19:19:19 [INFO] - Starting sync #2
+2024-12-20 19:19:19 [INFO] - Pullen voor portfolio
+2024-12-20 19:19:21 [INFO] - No updates found
+2024-12-20 19:19:21 [INFO] - Waiting 10 seconds until next sync
+2024-12-20 19:19:26 [INFO] - Pullen voor github-auto-pull
+2024-12-20 19:19:34 [INFO] - ==================================================
+2024-12-20 19:19:34 [INFO] - Starting GitHub Auto Pull Service
+2024-12-20 19:19:34 [INFO] - Configuration loaded: 1 repositories configured
+2024-12-20 19:19:34 [INFO] - Sync interval: 10 seconds
+2024-12-20 19:19:35 [INFO] - Starting sync #1
+2024-12-20 19:19:35 [INFO] - Pullen voor github-auto-pull
+2024-12-20 19:21:53 [ERROR] - Git error in github-auto-pull: Command '['git', '-C', 'C:/Users/Administrator/Desktop/Github/github-auto-pull', 'reset', '--hard']' returned non-zero exit status 128.
+2024-12-20 19:21:53 [ERROR] - Error syncing github-auto-pull: Git error in github-auto-pull: Command '['git', '-C', 'C:/Users/Administrator/Desktop/Github/github-auto-pull', 'reset', '--hard']' returned non-zero exit status 128.
+2024-12-20 19:21:53 [ERROR] - Error during sync #1: name 'CONFIG_FILE' is not defined
+Traceback (most recent call last):
+  File "C:\Users\Administrator\Desktop\Github\github-auto-pull\app\controllers\repo_sync.py", line 19, in sync_repositories
+    subprocess.run(['git', '-C', local_path, 'reset', '--hard'], check=True)
+  File "C:\Python312\Lib\subprocess.py", line 571, in run
+    raise CalledProcessError(retcode, process.args,
+subprocess.CalledProcessError: Command '['git', '-C', 'C:/Users/Administrator/Desktop/Github/github-auto-pull', 'reset', '--hard']' returned non-zero exit status 128.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\Administrator\Desktop\Github\github-auto-pull\app\sync_service.py", line 130, in main
+    updates = sync_repositories([repo])
+              ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Administrator\Desktop\Github\github-auto-pull\app\controllers\repo_sync.py", line 44, in sync_repositories
+    raise Exception(error_msg)
+Exception: Git error in github-auto-pull: Command '['git', '-C', 'C:/Users/Administrator/Desktop/Github/github-auto-pull', 'reset', '--hard']' returned non-zero exit status 128.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\Administrator\Desktop\Github\github-auto-pull\app\sync_service.py", line 143, in main
+    update_sync_status(repo['name'], 'error', repo_error)
+  File "C:\Users\Administrator\Desktop\Github\github-auto-pull\app\sync_service.py", line 55, in update_sync_status
+    with open(CONFIG_FILE) as f:
+              ^^^^^^^^^^^
+NameError: name 'CONFIG_FILE' is not defined
+2024-12-20 19:22:08 [INFO] - ==================================================
+2024-12-20 19:22:08 [INFO] - Starting GitHub Auto Pull Service
+2024-12-20 19:22:08 [INFO] - Configuration loaded: 1 repositories configured
+2024-12-20 19:22:08 [INFO] - Sync interval: 10 seconds
+2024-12-20 19:22:09 [INFO] - Starting sync #1
+2024-12-20 19:22:09 [INFO] - Pullen voor github-auto-pull
+2024-12-20 19:22:24 [ERROR] - Git error in github-auto-pull: Command '['git', '-C', 'C:/Users/Administrator/Desktop/Github/github-auto-pull', 'reset', '--hard']' returned non-zero exit status 128.
+2024-12-20 19:22:24 [ERROR] - Error syncing github-auto-pull: Git error in github-auto-pull: Command '['git', '-C', 'C:/Users/Administrator/Desktop/Github/github-auto-pull', 'reset', '--hard']' returned non-zero exit status 128.
+2024-12-20 19:22:24 [ERROR] - Error during sync #1: name 'CONFIG_FILE' is not defined
+Traceback (most recent call last):
+  File "C:\Users\Administrator\Desktop\Github\github-auto-pull\app\controllers\repo_sync.py", line 19, in sync_repositories
+    subprocess.run(['git', '-C', local_path, 'reset', '--hard'], check=True)
+  File "C:\Python312\Lib\subprocess.py", line 571, in run
+    raise CalledProcessError(retcode, process.args,
+subprocess.CalledProcessError: Command '['git', '-C', 'C:/Users/Administrator/Desktop/Github/github-auto-pull', 'reset', '--hard']' returned non-zero exit status 128.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\Administrator\Desktop\Github\github-auto-pull\app\sync_service.py", line 130, in main
+    updates = sync_repositories([repo])
+              ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Administrator\Desktop\Github\github-auto-pull\app\controllers\repo_sync.py", line 44, in sync_repositories
+    raise Exception(error_msg)
+Exception: Git error in github-auto-pull: Command '['git', '-C', 'C:/Users/Administrator/Desktop/Github/github-auto-pull', 'reset', '--hard']' returned non-zero exit status 128.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\Administrator\Desktop\Github\github-auto-pull\app\sync_service.py", line 143, in main
+    update_sync_status(repo['name'], 'error', repo_error)
+  File "C:\Users\Administrator\Desktop\Github\github-auto-pull\app\sync_service.py", line 55, in update_sync_status
+    with open(CONFIG_FILE) as f:
+              ^^^^^^^^^^^
+NameError: name 'CONFIG_FILE' is not defined
+2024-12-20 19:22:33 [INFO] - ==================================================
+2024-12-20 19:22:33 [INFO] - Starting GitHub Auto Pull Service
+2024-12-20 19:22:33 [INFO] - Configuration loaded: 1 repositories configured
+2024-12-20 19:22:33 [INFO] - Sync interval: 10 seconds
+2024-12-20 19:22:33 [INFO] - Starting sync #1
+2024-12-20 19:22:33 [INFO] - Pullen voor github-auto-pull
