@@ -19,22 +19,18 @@
             <i class="fab fa-github"></i>
             <span>GitHub Auto Pull</span>
         </div>
-        {% if session.get('logged_in') %}
         <div class="nav-links">
-            <a href="{{ url_for('index') }}" class="nav-link">
-                <i class="fas fa-home"></i>
-                Dashboard
-            </a>
-            <a href="{{ url_for('admin') }}" class="nav-link">
-                <i class="fas fa-cog"></i>
-                Admin
-            </a>
-            <a href="{{ url_for('logout') }}" class="nav-link">
-                <i class="fas fa-sign-out-alt"></i>
-                Logout
-            </a>
+            {% if session.get('logged_in') %}
+                {% if request.endpoint == 'admin' %}
+                    <a href="/" class="nav-link"><i class="fas fa-chart-line"></i> Dashboard</a>
+                {% else %}
+                    <a href="/admin" class="nav-link"><i class="fas fa-cog"></i> Admin</a>
+                {% endif %}
+                <a href="/logout" class="nav-link"><i class="fas fa-sign-out-alt"></i> Logout</a>
+            {% else %}
+                <a href="/login" class="nav-link"><i class="fas fa-sign-in-alt"></i> Login</a>
+            {% endif %}
         </div>
-        {% endif %}
     </nav>
 
     <!-- Main content container -->
