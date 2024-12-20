@@ -185,44 +185,112 @@ th {
 }
 
 /* Login styles */
-.login-container {
-    max-width: 400px;
-    margin: 4rem auto;
-    padding: 2rem;
-    background: #1e1e1e;
-    border-radius: 8px;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+.login-wrapper {
+    min-height: calc(100vh - 60px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #1e1e1e 0%, #2d2d2d 100%);
 }
 
-.login-header {
+.login-container {
+    width: 100%;
+    max-width: 400px;
+    padding: 2rem;
+    background: rgba(30, 30, 30, 0.95);
+    border-radius: 12px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.logo-container {
     text-align: center;
     margin-bottom: 2rem;
 }
 
-.login-header i {
-    font-size: 3rem;
+.logo-container i {
     color: #00adb5;
+    margin-bottom: 1rem;
 }
 
-.form-group {
+.logo-container h1 {
+    font-size: 1.8rem;
+    margin: 0.5rem 0;
+    color: #ffffff;
+}
+
+.subtitle {
+    color: #888;
+    font-size: 0.9rem;
+    margin: 0;
+}
+
+.input-wrapper {
+    position: relative;
     margin-bottom: 1.5rem;
 }
 
-.form-group label {
-    display: block;
-    margin-bottom: 0.5rem;
-    color: #aaa;
+.input-icon {
+    position: absolute;
+    left: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #00adb5;
+}
+
+.login-form input {
+    width: 100%;
+    padding: 1rem 1rem 1rem 3rem;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 8px;
+    color: white;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+}
+
+.login-form input:focus {
+    border-color: #00adb5;
+    box-shadow: 0 0 0 2px rgba(0, 173, 181, 0.2);
+    outline: none;
+}
+
+.login-form input::placeholder {
+    color: #666;
+}
+
+.login-btn {
+    width: 100%;
+    padding: 1rem;
+    background: #00adb5;
+    border: none;
+    border-radius: 8px;
+    color: white;
+    font-size: 1rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.login-btn:hover {
+    background: #00858c;
 }
 
 .error-message {
-    background: #dc3545;
-    color: white;
+    background: rgba(220, 53, 69, 0.1);
+    border: 1px solid rgba(220, 53, 69, 0.3);
+    color: #ff6b6b;
     padding: 1rem;
-    border-radius: 4px;
-    margin-bottom: 1rem;
+    border-radius: 8px;
+    margin-bottom: 1.5rem;
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 0.5rem;
 }
 
 /* Dashboard specific styles */
