@@ -9,9 +9,8 @@ from controllers.repo_sync import sync_repositories
 from controllers.notifier import send_notification, send_notifications
 
 # Laad configuratie
-with open('app/config/config.json') as f:
-    config = json.load(f)
-    
+CONFIG_FILE = 'app/config/config.json'
+
 # Configureer logging met meer details
 def setup_logging(log_file):
     # Zorg ervoor dat de log directory bestaat
