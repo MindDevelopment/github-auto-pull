@@ -44,4 +44,3 @@ def sync_repositories(repositories):
             raise Exception(error_msg)
     
     return updates
-
