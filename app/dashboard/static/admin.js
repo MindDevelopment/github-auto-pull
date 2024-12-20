@@ -1,5 +1,3 @@
-// app/dashboard/static/admin.js
-
 document.addEventListener('DOMContentLoaded', function() {
     // Webhook management
     const webhookForm = document.getElementById('webhook-form');
