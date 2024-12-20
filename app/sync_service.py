@@ -46,6 +46,7 @@ def save_config(config):
         os.makedirs(os.path.dirname(CONFIG_FILE), exist_ok=True)
         with open(CONFIG_FILE, 'w') as f:
             json.dump(config, f, indent=4)
+        restart_sync_service()
     except Exception as e:
         raise Exception(f"Fout bij opslaan configuratie: {str(e)}")
 
@@ -54,6 +55,26 @@ def check_process_running(process_name):
         output = subprocess.check_output(['tasklist', '/FI', f'IMAGENAME eq {process_name}'])
         return process_name.encode() in output
     except subprocess.CalledProcessError:
+        return False
+
+def restart_sync_service():
+    service_name = "python.exe"
+    try:
+        if check_process_running(service_name):
+            logging.info("Stopping existing sync service...")
+            subprocess.run(['taskkill', '/F', '/IM', service_name], check=True)
+            time.sleep(2)
+
+        logging.info("Starting new sync service instance...")
+        subprocess.Popen(
+            ['cmd.exe', '/c', 'start', 'python', 'app/sync_service.py'],
+            shell=True,
+            stdout=subprocess.DEVNULL,  # Schakel logging uit voor subprocess
+            stderr=subprocess.DEVNULL
+        )
+        return True
+    except subprocess.CalledProcessError as e:
+        logging.error(f"Error during service restart: {e}")
         return False
 
 def update_sync_status(repo_name, status, error=None):
