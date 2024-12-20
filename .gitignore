@@ -2,3 +2,4 @@
 app/controllers/__pycache__/notifier.cpython-312.pyc
 app/controllers/__pycache__/repo_sync.cpython-312.pyc
 logs/sync.log
+/app/config
