@@ -84,13 +84,31 @@ def update_sync_status(repo_name, status, error=None):
 def sync_repository(repo, config):
     """Synchroniseer een enkele repository"""
     try:
-        updates = sync_repositories([repo])
-        if updates:
-            update_sync_status(repo['name'], 'success')
-            send_notifications(config['discord_webhook'], updates)
+        result = sync_repositories([repo])
+        
+        # Als we een dictionary terugkrijgen met updates
+        if isinstance(result, dict):
+            if result.get('status') == 'error':
+                # Bij een error in de sync
+                error_msg = result.get('error', 'Unknown error during sync')
+                logging.error(error_msg)
+                update_sync_status(repo['name'], 'error', error_msg)
+                send_notification(config['discord_webhook'], error_msg, "error")
+            elif result.get('updates'):
+                # Bij succesvolle updates
+                update_sync_status(repo['name'], 'success')
+                send_notifications(config['discord_webhook'], result['updates'])
+            else:
+                # Bij succes maar geen updates
+                update_sync_status(repo['name'], 'success')
+                logging.info(f"No updates for {repo['name']}")
         else:
-            update_sync_status(repo['name'], 'success')
-            logging.info(f"No updates for {repo['name']}")
+            # Bij onverwacht resultaat formaat
+            error_msg = f"Unexpected sync result format for {repo['name']}"
+            logging.error(error_msg)
+            update_sync_status(repo['name'], 'error', error_msg)
+            send_notification(config['discord_webhook'], error_msg, "error")
+            
     except Exception as e:
         error_msg = f"Error syncing {repo['name']}: {str(e)}"
         logging.error(error_msg)
