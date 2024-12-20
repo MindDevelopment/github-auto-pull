@@ -22,6 +22,7 @@ def load_config():
 
 def save_config(config):
     try:
+        os.makedirs(os.path.dirname(CONFIG_FILE), exist_ok=True)
         with open(CONFIG_FILE, 'w') as f:
             json.dump(config, f, indent=4)
         restart_sync_service()

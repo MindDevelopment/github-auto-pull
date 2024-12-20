@@ -26,7 +26,7 @@ document.addEventListener('DOMContentLoaded', function() {
     window.deleteRepo = async function(name) {
         if (confirm(`Are you sure you want to delete repository "${name}"?`)) {
             try {
-                const response = await fetch('/api/repo', {
+                const response = await fetch('/api/repositories', {
                     method: 'DELETE',
                     headers: {'Content-Type': 'application/json'},
                     body: JSON.stringify({ name: name })
@@ -73,7 +73,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const data = Object.fromEntries(formData);
             
             try {
-                const response = await fetch('/api/repo', {
+                const response = await fetch('/api/repositories', {
                     method: 'PUT',
                     headers: {'Content-Type': 'application/json'},
                     body: JSON.stringify(data)
@@ -115,7 +115,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const data = Object.fromEntries(formData);
             
             try {
-                const response = await fetch('/api/repo', {
+                const response = await fetch('/api/repositories', {
                     method: 'POST',
                     headers: {'Content-Type': 'application/json'},
                     body: JSON.stringify(data)
@@ -124,7 +124,8 @@ document.addEventListener('DOMContentLoaded', function() {
                     showNotification('Repository added successfully', 'success');
                     location.reload();
                 } else {
-                    showNotification('Failed to add repository', 'error');
+                    const errorData = await response.json();
+                    showNotification(errorData.error || 'Failed to add repository', 'error');
                 }
             } catch (error) {
                 showNotification('Error adding repository', 'error');
@@ -132,32 +133,3 @@ document.addEventListener('DOMContentLoaded', function() {
         };
     };
 });
-
-// Utility functions
-function showModal(title, content) {
-    const modal = document.createElement('div');
-    modal.className = 'modal';
-    modal.innerHTML = `
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2>${title}</h2>
-                <span class="close">&times;</span>
-            </div>
-            <div class="modal-body">
-                ${content}
-            </div>
-        </div>
-    `;
-
-    document.body.appendChild(modal);
-    modal.querySelector('.close').onclick = () => modal.remove();
-}
-
-function showNotification(message, type) {
-    const notification = document.createElement('div');
-    notification.className = `notification ${type}`;
-    notification.textContent = message;
-    document.body.appendChild(notification);
-    
-    setTimeout(() => notification.remove(), 3000);
-}
