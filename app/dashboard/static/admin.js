@@ -50,11 +50,20 @@ document.addEventListener('DOMContentLoaded', function() {
         const path = row.querySelector('.repo-path').textContent;
 
         showModal('Edit Repository', `
-            <form id="edit-repo-form">
-                <input type="hidden" name="old_name" value="${name}">
-                <input type="text" name="name" value="${name}" placeholder="Repository Name" required>
-                <input type="text" name="url" value="${url}" placeholder="Repository URL" required>
-                <input type="text" name="local_path" value="${path}" placeholder="Local Path" required>
+            <form id="edit-repo-form" class="repository-form">
+                <div class="form-group">
+                    <label>Repository Name</label>
+                    <input type="hidden" name="old_name" value="${name}">
+                    <input type="text" name="name" value="${name}" placeholder="Repository Name" required>
+                </div>
+                <div class="form-group">
+                    <label>Repository URL</label>
+                    <input type="text" name="url" value="${url}" placeholder="Repository URL" required>
+                </div>
+                <div class="form-group">
+                    <label>Local Path</label>
+                    <input type="text" name="local_path" value="${path}" placeholder="Local Path" required>
+                </div>
                 <button type="submit">Update Repository</button>
             </form>
         `);
@@ -84,10 +93,19 @@ document.addEventListener('DOMContentLoaded', function() {
 
     window.showAddRepoForm = function() {
         showModal('Add Repository', `
-            <form id="add-repo-form">
-                <input type="text" name="name" placeholder="Repository Name" required>
-                <input type="text" name="url" placeholder="Repository URL" required>
-                <input type="text" name="local_path" placeholder="Local Path" required>
+            <form id="add-repo-form" class="repository-form">
+                <div class="form-group">
+                    <label>Repository Name</label>
+                    <input type="text" name="name" placeholder="Repository Name" required>
+                </div>
+                <div class="form-group">
+                    <label>Repository URL</label>
+                    <input type="text" name="url" placeholder="Repository URL" required>
+                </div>
+                <div class="form-group">
+                    <label>Local Path</label>
+                    <input type="text" name="local_path" placeholder="Local Path" required>
+                </div>
                 <button type="submit">Add Repository</button>
             </form>
         `);
@@ -115,6 +133,7 @@ document.addEventListener('DOMContentLoaded', function() {
         };
     };
 });
+
 
 // Utility functions
 function showModal(title, content) {
