@@ -15,21 +15,25 @@
     },
     "sync_status": {
         "last_sync_times": {
-            "github-auto-pull": "2024-12-20T22:44:36.719652"
+            "github-auto-pull": "2024-12-20T23:02:33.116900"
         },
         "sync_errors": {
             "github-auto-pull": [
                 {
                     "time": "2024-12-20T22:44:36.719652",
                     "error": "Git error in github-auto-pull: Command '['git', '-C', 'C:/Users/Administrator/Desktop/Github/github-auto-pull', 'reset', '--hard']' returned non-zero exit status 128."
+                },
+                {
+                    "time": "2024-12-20T23:02:33.116900",
+                    "error": "Git error in github-auto-pull: Command '['git', '-C', 'C:/Users/Administrator/Desktop/Github/github-auto-pull', 'reset', '--hard']' returned non-zero exit status 128."
                 }
             ]
         },
         "sync_statistics": {
             "github-auto-pull": {
-                "total_syncs": 1,
+                "total_syncs": 2,
                 "successful_syncs": 0,
-                "failed_syncs": 1
+                "failed_syncs": 2
             }
         }
     }
