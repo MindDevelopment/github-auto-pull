@@ -8,15 +8,29 @@ from datetime import datetime
 from controllers.repo_sync import sync_repositories
 from controllers.notifier import send_notification, send_notifications
 
+CONFIG_FILE = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'config', 'config.json')
+
 # Configureer logging met meer details
 def setup_logging(log_file):
+    # Zorg ervoor dat de log directory bestaat
+    log_dir = os.path.dirname(log_file)
+    if not os.path.exists(log_dir):
+        os.makedirs(log_dir)
+
+    # Probeer bestaand log bestand te sluiten
+    for handler in logging.root.handlers[:]:
+        logging.root.removeHandler(handler)
+        if hasattr(handler, 'close'):
+            handler.close()
+
     logging.basicConfig(
         filename=log_file,
         level=logging.INFO,
         format='%(asctime)s [%(levelname)s] - %(message)s',
         datefmt='%Y-%m-%d %H:%M:%S'
     )
-    # Voeg ook console logging toe
+    
+    # Voeg console logging toe
     console_handler = logging.StreamHandler(sys.stdout)
     console_handler.setLevel(logging.INFO)
     logging.getLogger().addHandler(console_handler)
