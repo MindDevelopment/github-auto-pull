@@ -65,6 +65,15 @@ def restart_sync_service():
         logging.error(f"Error during service restart: {e}")
         return False
 
+def save_config(config):
+    try:
+        os.makedirs(os.path.dirname(CONFIG_FILE), exist_ok=True)
+        with open(CONFIG_FILE, 'w') as f:
+            json.dump(config, f, indent=4)
+        restart_sync_service()
+    except Exception as e:
+        raise ConfigError(f"Fout bij opslaan configuratie: {str(e)}")
+
 def update_sync_status(repo_name, status, error=None):
     with open(CONFIG_FILE) as f:
         config = json.load(f)
