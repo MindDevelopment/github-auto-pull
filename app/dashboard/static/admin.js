@@ -1,4 +1,26 @@
 document.addEventListener('DOMContentLoaded', function() {
+    function showModal(title, content) {
+        // Verwijder bestaande modals
+        const existingModal = document.querySelector('.modal');
+        if (existingModal) {
+            existingModal.remove();
+        }
+    
+        // Maak nieuwe modal
+        const modal = document.createElement('div');
+        modal.className = 'modal';
+        modal.innerHTML = `
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2>${title}</h2>
+                    <span class="close" onclick="this.closest('.modal').remove()">&times;</span>
+                </div>
+                ${content}
+            </div>
+        `;
+    
+        document.body.appendChild(modal);
+    }
     // Webhook management
     const webhookForm = document.getElementById('webhook-form');
     if (webhookForm) {
