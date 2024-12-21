@@ -153,7 +153,7 @@ def manage_repositories():
                 return jsonify({"error": "Repository name already exists"}), HTTPStatus.BAD_REQUEST
             
             config['repositories'].append(new_repo)
-            save_config(config)
+            save_config(config, restart=True)
             return jsonify({"status": "success"})
         
         elif request.method == "PUT":
@@ -168,7 +168,7 @@ def manage_repositories():
                         'url': repo_data['url'],
                         'local_path': repo_data['local_path']
                     }
-                    save_config(config)
+                    save_config(config, restart=True)
                     return jsonify({"status": "success"})
             
             return jsonify({"error": "Repository not found"}), HTTPStatus.NOT_FOUND
@@ -184,7 +184,7 @@ def manage_repositories():
             if len(config['repositories']) == original_length:
                 return jsonify({"error": "Repository not found"}), HTTPStatus.NOT_FOUND
             
-            save_config(config)
+            save_config(config, restart=True)
             return jsonify({"status": "success"})
             
     except Exception as e:
