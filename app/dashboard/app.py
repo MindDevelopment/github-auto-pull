@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, jsonify, redirect, url_for, session, abort
 import json
 import os
+import logging
 from functools import wraps
 from http import HTTPStatus
 
@@ -115,12 +116,20 @@ def manage_repositories():
             new_repo = request.json
             if not all(k in new_repo for k in ['name', 'url', 'local_path']):
                 return jsonify({"error": "Missende velden"}), HTTPStatus.BAD_REQUEST
+            
+            # Controleer of repository al bestaat
+            if any(repo['name'] == new_repo['name'] for repo in config['repositories']):
+                return jsonify({"error": "Repository naam bestaat al"}), HTTPStatus.BAD_REQUEST
+            
             config['repositories'].append(new_repo)
+            save_config(config, restart=True)  # Restart parameter op True zetten
+            return jsonify({"status": "success"})
         
         elif request.method == "PUT":
             repo_data = request.json
             if not all(k in repo_data for k in ['old_name', 'name', 'url', 'local_path']):
                 return jsonify({"error": "Missende velden"}), HTTPStatus.BAD_REQUEST
+            
             for i, repo in enumerate(config['repositories']):
                 if repo['name'] == repo_data['old_name']:
                     config['repositories'][i] = {
@@ -128,27 +137,28 @@ def manage_repositories():
                         'url': repo_data['url'],
                         'local_path': repo_data['local_path']
                     }
-                    break
-            else:
-                return jsonify({"error": "Repository niet gevonden"}), HTTPStatus.NOT_FOUND
+                    save_config(config, restart=True)  # Restart parameter op True zetten
+                    return jsonify({"status": "success"})
+            
+            return jsonify({"error": "Repository niet gevonden"}), HTTPStatus.NOT_FOUND
         
         elif request.method == "DELETE":
             repo_name = request.json.get('name')
             if not repo_name:
                 return jsonify({"error": "Naam niet opgegeven"}), HTTPStatus.BAD_REQUEST
+            
             original_length = len(config['repositories'])
-            config['repositories'] = [r for r in config['repositories'] 
-                                    if r['name'] != repo_name]
+            config['repositories'] = [r for r in config['repositories'] if r['name'] != repo_name]
+            
             if len(config['repositories']) == original_length:
                 return jsonify({"error": "Repository niet gevonden"}), HTTPStatus.NOT_FOUND
-        
-        save_config(config)
-        return jsonify({"status": "success"})
-        
-    except ConfigError as e:
-        return jsonify({"error": str(e)}), HTTPStatus.INTERNAL_SERVER_ERROR
+            
+            save_config(config, restart=True)  # Restart parameter op True zetten
+            return jsonify({"status": "success"})
+            
     except Exception as e:
-        return jsonify({"error": "Onverwachte fout"}), HTTPStatus.INTERNAL_SERVER_ERROR
+        logging.error(f"Error in manage_repositories: {str(e)}")
+        return jsonify({"error": str(e)}), HTTPStatus.INTERNAL_SERVER_ERROR
 
 @app.route("/api/webhook", methods=["PUT"])
 @admin_required
