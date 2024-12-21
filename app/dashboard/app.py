@@ -174,8 +174,6 @@ def manage_repositories():
             save_config(config)
             return jsonify({"status": "success"})
             
-            return jsonify({"error": "Repository not found"}), HTTPStatus.NOT_FOUND
-        
         elif request.method == "DELETE":
             repo_name = request.json.get('name')
             if not repo_name:
@@ -191,8 +189,9 @@ def manage_repositories():
             return jsonify({"status": "success"})
             
     except Exception as e:
-        logger.error(f"Error in manage_repositories: {str(e)}")
+        logging.error(f"Error in manage_repositories: {str(e)}")
         return jsonify({"error": str(e)}), HTTPStatus.INTERNAL_SERVER_ERROR
+
 
 @app.route("/api/webhook", methods=["PUT"])
 @admin_required
