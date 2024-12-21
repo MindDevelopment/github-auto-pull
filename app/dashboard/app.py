@@ -140,35 +140,39 @@ def manage_repositories():
     try:
         config = load_config()
         
-        if request.method == "GET":
-            return jsonify(config['repositories'])
-        
-        elif request.method == "POST":
+        if request.method == "POST":
             new_repo = request.json
             if not all(k in new_repo for k in ['name', 'url', 'local_path']):
                 return jsonify({"error": "Missing required fields"}), HTTPStatus.BAD_REQUEST
             
+            # Controleer of repository al bestaat
             if any(repo['name'] == new_repo['name'] for repo in config['repositories']):
                 return jsonify({"error": "Repository name already exists"}), HTTPStatus.BAD_REQUEST
             
+            # Voeg nieuwe repository toe
             config['repositories'].append(new_repo)
+            
+            # Initialiseer sync status voor nieuwe repository
+            if 'sync_status' not in config:
+                config['sync_status'] = {}
+            if 'last_sync_times' not in config['sync_status']:
+                config['sync_status']['last_sync_times'] = {}
+            if 'sync_errors' not in config['sync_status']:
+                config['sync_status']['sync_errors'] = {}
+            if 'sync_statistics' not in config['sync_status']:
+                config['sync_status']['sync_statistics'] = {}
+            
+            config['sync_status']['last_sync_times'][new_repo['name']] = None
+            config['sync_status']['sync_errors'][new_repo['name']] = []
+            config['sync_status']['sync_statistics'][new_repo['name']] = {
+                'total_syncs': 0,
+                'successful_syncs': 0,
+                'failed_syncs': 0
+            }
+            
+            # Sla de configuratie op
             save_config(config)
             return jsonify({"status": "success"})
-        
-        elif request.method == "PUT":
-            repo_data = request.json
-            if not all(k in repo_data for k in ['old_name', 'name', 'url', 'local_path']):
-                return jsonify({"error": "Missing required fields"}), HTTPStatus.BAD_REQUEST
-            
-            for i, repo in enumerate(config['repositories']):
-                if repo['name'] == repo_data['old_name']:
-                    config['repositories'][i] = {
-                        'name': repo_data['name'],
-                        'url': repo_data['url'],
-                        'local_path': repo_data['local_path']
-                    }
-                    save_config(config)
-                    return jsonify({"status": "success"})
             
             return jsonify({"error": "Repository not found"}), HTTPStatus.NOT_FOUND
         
