@@ -41,15 +41,14 @@ def load_config():
         raise ConfigError(f"Configuratie fout: {str(e)}")
 
 def save_config(config):
-    """Sla configuratie op met verbeterde error handling"""
+    """Laad configuratie met verbeterde error handling"""
     try:
         os.makedirs(os.path.dirname(CONFIG_FILE), exist_ok=True)
         with open(CONFIG_FILE, 'w') as f:
             json.dump(config, f, indent=4)
-        restart_sync_service()
     except Exception as e:
-        logger.error(f"Fout bij opslaan configuratie: {str(e)}")
-        raise ConfigError(f"Fout bij opslaan configuratie: {str(e)}")
+        logger.error(f"Configuratie fout: {str(e)}")
+        raise ConfigError(f"Configuratie fout: {str(e)}")
 
 def restart_sync_service():
     """Herstart sync service met verbeterde error handling"""
@@ -153,7 +152,7 @@ def manage_repositories():
                 return jsonify({"error": "Repository name already exists"}), HTTPStatus.BAD_REQUEST
             
             config['repositories'].append(new_repo)
-            save_config(config, restart=True)
+            save_config(config)
             return jsonify({"status": "success"})
         
         elif request.method == "PUT":
@@ -168,7 +167,7 @@ def manage_repositories():
                         'url': repo_data['url'],
                         'local_path': repo_data['local_path']
                     }
-                    save_config(config, restart=True)
+                    save_config(config)
                     return jsonify({"status": "success"})
             
             return jsonify({"error": "Repository not found"}), HTTPStatus.NOT_FOUND
@@ -184,7 +183,7 @@ def manage_repositories():
             if len(config['repositories']) == original_length:
                 return jsonify({"error": "Repository not found"}), HTTPStatus.NOT_FOUND
             
-            save_config(config, restart=True)
+            save_config(config)
             return jsonify({"status": "success"})
             
     except Exception as e:
