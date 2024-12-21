@@ -50,17 +50,6 @@ def save_config(config):
         logger.error(f"Configuratie fout: {str(e)}")
         raise ConfigError(f"Configuratie fout: {str(e)}")
 
-def restart_sync_service():
-    """Herstart sync service met verbeterde error handling"""
-    try:
-        # Stop bestaande service
-        os.system("pkill -f 'python.*sync_service.py'")
-        # Start nieuwe service
-        os.system("nohup python app/sync_service.py > /dev/null 2>&1 &")
-    except Exception as e:
-        logger.error(f"Fout bij herstarten service: {str(e)}")
-        raise ConfigError(f"Fout bij herstarten service: {str(e)}")
-
 def admin_required(f):
     """Verbeterde admin authenticatie decorator"""
     @wraps(f)
@@ -83,11 +72,13 @@ def internal_error(error):
 def config_error(error):
     return render_template('error.html', error=str(error)), HTTPStatus.INTERNAL_SERVER_ERROR
 
-# Static files route
+# Static files route met caching
 @app.route('/static/<path:filename>')
 def serve_static(filename):
     """Serve static files met caching"""
-    return send_from_directory(STATIC_FOLDER, filename, cache_timeout=300)
+    response = send_from_directory(STATIC_FOLDER, filename)
+    response.headers['Cache-Control'] = 'public, max-age=300'  # 5 minuten cache
+    return response
 
 # Routes
 @app.route('/')
@@ -114,7 +105,7 @@ def login():
                 return redirect(next_page)
             return render_template('login.html', error="Invalid credentials"), HTTPStatus.UNAUTHORIZED
         except ConfigError as e:
-            return render_template('login.html', error=str(e)), HTTPStatus.INTERNAL_SERVER_ERROR
+            return render_template('error.html', error=str(e)), HTTPStatus.INTERNAL_SERVER_ERROR
     return render_template('login.html')
 
 @app.route('/logout')
@@ -140,7 +131,10 @@ def manage_repositories():
     try:
         config = load_config()
         
-        if request.method == "POST":
+        if request.method == "GET":
+            return jsonify({"repositories": config['repositories']})
+        
+        elif request.method == "POST":
             new_repo = request.json
             if not all(k in new_repo for k in ['name', 'url', 'local_path']):
                 return jsonify({"error": "Missing required fields"}), HTTPStatus.BAD_REQUEST
@@ -170,7 +164,6 @@ def manage_repositories():
                 'failed_syncs': 0
             }
             
-            # Sla de configuratie op
             save_config(config)
             return jsonify({"status": "success"})
             
@@ -179,19 +172,42 @@ def manage_repositories():
             if not repo_name:
                 return jsonify({"error": "Repository name required"}), HTTPStatus.BAD_REQUEST
             
+            # Verwijder repository en gerelateerde statistieken
             original_length = len(config['repositories'])
             config['repositories'] = [r for r in config['repositories'] if r['name'] != repo_name]
             
             if len(config['repositories']) == original_length:
                 return jsonify({"error": "Repository not found"}), HTTPStatus.NOT_FOUND
             
+            # Verwijder ook de sync status data
+            if 'sync_status' in config:
+                if repo_name in config['sync_status'].get('last_sync_times', {}):
+                    del config['sync_status']['last_sync_times'][repo_name]
+                if repo_name in config['sync_status'].get('sync_errors', {}):
+                    del config['sync_status']['sync_errors'][repo_name]
+                if repo_name in config['sync_status'].get('sync_statistics', {}):
+                    del config['sync_status']['sync_statistics'][repo_name]
+
             save_config(config)
             return jsonify({"status": "success"})
             
+        elif request.method == "PUT":
+            updated_repo = request.json
+            if not all(k in updated_repo for k in ['name', 'url', 'local_path']):
+                return jsonify({"error": "Missing required fields"}), HTTPStatus.BAD_REQUEST
+            
+            # Update bestaande repository
+            for repo in config['repositories']:
+                if repo['name'] == updated_repo['name']:
+                    repo.update(updated_repo)
+                    save_config(config)
+                    return jsonify({"status": "success"})
+            
+            return jsonify({"error": "Repository not found"}), HTTPStatus.NOT_FOUND
+            
     except Exception as e:
-        logging.error(f"Error in manage_repositories: {str(e)}")
+        logger.error(f"Error in manage_repositories: {str(e)}")
         return jsonify({"error": str(e)}), HTTPStatus.INTERNAL_SERVER_ERROR
-
 
 @app.route("/api/webhook", methods=["PUT"])
 @admin_required
@@ -206,13 +222,11 @@ def update_webhook():
         save_config(config)
         return jsonify({"status": "success"})
         
-    except ConfigError as e:
-        return jsonify({"error": str(e)}), HTTPStatus.INTERNAL_SERVER_ERROR
     except Exception as e:
         logger.error(f"Error in update_webhook: {str(e)}")
-        return jsonify({"error": "Unexpected error"}), HTTPStatus.INTERNAL_SERVER_ERROR
+        return jsonify({"error": str(e)}), HTTPStatus.INTERNAL_SERVER_ERROR
 
-@app.route("/api/status", methods=["GET"])
+@app.route("/api/status")
 def get_status():
     try:
         config = load_config()
