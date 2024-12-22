@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block title %}Error - GitHub Auto Pull{% endblock %}
+
+{% block content %}
+<div class="error-container">
+    <div class="card">
+        <div class="card-header">
+            <i class="fas fa-exclamation-circle"></i>
+            <h2>Error</h2>
+        </div>
+        <div class="card-content">
+            <div class="error-message">
+                {{ error }}
+            </div>
+            <a href="/" class="button">
+                <i class="fas fa-home"></i>
+                Back to Dashboard
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}
