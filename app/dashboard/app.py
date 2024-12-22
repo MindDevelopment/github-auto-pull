@@ -2,6 +2,7 @@ from flask import Flask, render_template, request, jsonify, redirect, url_for, s
 import json
 import os
 import logging
+from filelock import FileLock
 from functools import wraps
 from http import HTTPStatus
 from datetime import timedelta
@@ -40,15 +41,19 @@ def load_config():
         logger.error(f"Configuratie fout: {str(e)}")
         raise ConfigError(f"Configuratie fout: {str(e)}")
 
-def save_config(config):
-    """Laad configuratie met verbeterde error handling"""
+def save_config(config_data):
+    """Thread-safe config saving with proper error handling"""
+    config_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'config', 'config.json')
+    lock_path = config_path + ".lock"
+    
     try:
-        os.makedirs(os.path.dirname(CONFIG_FILE), exist_ok=True)
-        with open(CONFIG_FILE, 'w') as f:
-            json.dump(config, f, indent=4)
+        with FileLock(lock_path):
+            with open(config_path, 'w') as f:
+                json.dump(config_data, f, indent=4)  # Gecorrigeerde volgorde
+        return True
     except Exception as e:
-        logger.error(f"Configuratie fout: {str(e)}")
-        raise ConfigError(f"Configuratie fout: {str(e)}")
+        logger.error(f"Failed to save config: {str(e)}")
+        return False
 
 def admin_required(f):
     """Verbeterde admin authenticatie decorator"""
@@ -125,28 +130,25 @@ def admin():
         return render_template('error.html', error=str(e)), HTTPStatus.INTERNAL_SERVER_ERROR
 
 # API routes
-@app.route("/api/repositories", methods=["GET", "POST", "PUT", "DELETE"])
+@app.route("/api/repositories", methods=["POST"])
 @admin_required
 def manage_repositories():
     try:
         config = load_config()
         
-        if request.method == "GET":
-            return jsonify({"repositories": config['repositories']})
-        
-        elif request.method == "POST":
+        if request.method == "POST":
             new_repo = request.json
             if not all(k in new_repo for k in ['name', 'url', 'local_path']):
                 return jsonify({"error": "Missing required fields"}), HTTPStatus.BAD_REQUEST
             
-            # Controleer of repository al bestaat
+            # Check if repository already exists
             if any(repo['name'] == new_repo['name'] for repo in config['repositories']):
                 return jsonify({"error": "Repository name already exists"}), HTTPStatus.BAD_REQUEST
             
-            # Voeg nieuwe repository toe
+            # Add new repository
             config['repositories'].append(new_repo)
             
-            # Initialiseer sync status voor nieuwe repository
+            # Initialize sync status
             if 'sync_status' not in config:
                 config['sync_status'] = {}
             if 'last_sync_times' not in config['sync_status']:
@@ -164,47 +166,12 @@ def manage_repositories():
                 'failed_syncs': 0
             }
             
-            save_config(config)
-            return jsonify({"status": "success"})
-            
-        elif request.method == "DELETE":
-            repo_name = request.json.get('name')
-            if not repo_name:
-                return jsonify({"error": "Repository name required"}), HTTPStatus.BAD_REQUEST
-            
-            # Verwijder repository en gerelateerde statistieken
-            original_length = len(config['repositories'])
-            config['repositories'] = [r for r in config['repositories'] if r['name'] != repo_name]
-            
-            if len(config['repositories']) == original_length:
-                return jsonify({"error": "Repository not found"}), HTTPStatus.NOT_FOUND
-            
-            # Verwijder ook de sync status data
-            if 'sync_status' in config:
-                if repo_name in config['sync_status'].get('last_sync_times', {}):
-                    del config['sync_status']['last_sync_times'][repo_name]
-                if repo_name in config['sync_status'].get('sync_errors', {}):
-                    del config['sync_status']['sync_errors'][repo_name]
-                if repo_name in config['sync_status'].get('sync_statistics', {}):
-                    del config['sync_status']['sync_statistics'][repo_name]
-
-            save_config(config)
-            return jsonify({"status": "success"})
-            
-        elif request.method == "PUT":
-            updated_repo = request.json
-            if not all(k in updated_repo for k in ['name', 'url', 'local_path']):
-                return jsonify({"error": "Missing required fields"}), HTTPStatus.BAD_REQUEST
-            
-            # Update bestaande repository
-            for repo in config['repositories']:
-                if repo['name'] == updated_repo['name']:
-                    repo.update(updated_repo)
-                    save_config(config)
-                    return jsonify({"status": "success"})
-            
-            return jsonify({"error": "Repository not found"}), HTTPStatus.NOT_FOUND
-            
+            # Save configuration with new repository
+            if save_config(config):
+                return jsonify({"status": "success"})
+            else:
+                return jsonify({"error": "Failed to save configuration"}), HTTPStatus.INTERNAL_SERVER_ERROR
+                
     except Exception as e:
         logger.error(f"Error in manage_repositories: {str(e)}")
         return jsonify({"error": str(e)}), HTTPStatus.INTERNAL_SERVER_ERROR
