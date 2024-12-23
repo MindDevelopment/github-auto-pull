@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, jsonify, redirect, url_for, session, abort
-from werkzeug.security import safe_str_cmp  # Voor veilige string vergelijking
+from werkzeug.security import safe_string_compare as safe_str_cmp
 import os
 import logging
 from functools import wraps
