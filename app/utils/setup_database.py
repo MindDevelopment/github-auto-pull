@@ -1,13 +1,16 @@
 from mysql.connector import connect, Error
+from dotenv import load_dotenv
+import os
 import logging
 
 def setup_database():
+    load_dotenv()
+    
     try:
-        # Vervang deze waardes met je eigen database credentials
         connection = connect(
-            host="localhost",
-            user="your_username",
-            password="your_password"
+            host=os.getenv('DB_HOST', 'localhost'),
+            user=os.getenv('DB_USER'),
+            password=os.getenv('DB_PASSWORD')
         )
         
         cursor = connection.cursor()
