@@ -6,7 +6,7 @@ from filelock import FileLock
 from functools import wraps
 from http import HTTPStatus
 from datetime import timedelta
-from utils.database import DatabaseConnection
+from app.utils.database import DatabaseConnection
 from dotenv import load_dotenv
 
 # Load environment variables
@@ -16,12 +16,13 @@ app = Flask(__name__)
 app.secret_key = os.environ.get('SECRET_KEY', 'your-secret-key-here')
 app.permanent_session_lifetime = timedelta(hours=1)
 
-# Initialize database connection
+
+# Update de database initialisatie
 db = DatabaseConnection(
-    host=os.environ.get('DB_HOST'),
-    user=os.environ.get('DB_USER'),
-    password=os.environ.get('DB_PASSWORD'),
-    database=os.environ.get('DB_NAME')
+    host=os.getenv('DB_HOST', 'localhost'),
+    user=os.getenv('DB_USER'),
+    password=os.getenv('DB_PASSWORD'),
+    database=os.getenv('DB_NAME', 'github_auto_pull')
 )
 
 # Logging configuration
