@@ -2,7 +2,7 @@ import json
 import logging
 from dotenv import load_dotenv
 import os
-from database import DatabaseConnection
+from app.utils.database import DatabaseConnection  # Gebruik het volledige padn
 
 def migrate_existing_data():
     try:
