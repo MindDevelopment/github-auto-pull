@@ -1,16 +1,27 @@
 import json
-from database import DatabaseConnection
 import logging
+from dotenv import load_dotenv
+import os
+from utils.database import DatabaseConnection  # Correct import path
 
 def migrate_existing_data():
     try:
+        # Load environment variables
+        load_dotenv()
+        
         # Load existing config
         with open('app/config/config.json', 'r') as f:
             config = json.load(f)
         
-        db = DatabaseConnection()
+        # Correct database initialization
+        db = DatabaseConnection(
+            host=os.getenv('DB_HOST', 'localhost'),
+            user=os.getenv('DB_USER'),
+            password=os.getenv('DB_PASSWORD'),
+            database=os.getenv('DB_NAME', 'github_auto_pull')
+        )
         
-        # Migrate repositories
+        # Rest van je code blijft hetzelfde
         for repo in config['repositories']:
             try:
                 repo_id = db.add_repository(
@@ -23,7 +34,6 @@ def migrate_existing_data():
                 if 'sync_status' in config:
                     status_data = config['sync_status']
                     
-                    # Last sync time
                     if repo['name'] in status_data.get('last_sync_times', {}):
                         db.update_sync_status(
                             repo_id,
@@ -31,7 +41,6 @@ def migrate_existing_data():
                             None
                         )
                     
-                    # Sync errors
                     if repo['name'] in status_data.get('sync_errors', {}):
                         for error in status_data['sync_errors'][repo['name']]:
                             db.update_sync_status(
