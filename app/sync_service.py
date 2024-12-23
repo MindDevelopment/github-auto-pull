@@ -1,177 +1,136 @@
 import os
-import time
+import asyncio
 import json
 import logging
-import subprocess
-import sys
+import signal
+import aiofiles
 from datetime import datetime
 from filelock import FileLock
-from controllers.repo_sync import sync_repositories
+from typing import Dict, Any
+from controllers.repo_sync import sync_repositories, GitError
 from controllers.notifier import send_notification, send_notifications
 
-# Configuratie constanten
 CONFIG_FILE = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'config', 'config.json')
 
-def setup_logging(log_file):
-    """Configureer logging met file lock om conflicten te voorkomen"""
+class GracefulExit(SystemExit):
+    pass
+
+def signal_handler(signum, frame):
+    raise GracefulExit()
+
+def setup_logging(log_file: str) -> None:
+    """Configureer logging met rotatie en file lock"""
     os.makedirs(os.path.dirname(log_file), exist_ok=True)
     lock = FileLock(log_file + '.lock')
     
     with lock:
-        for handler in logging.root.handlers[:]:
-            if hasattr(handler, 'close'):
-                handler.close()
-            logging.root.removeHandler(handler)
-
         logging.basicConfig(
-            filename=log_file,
+            handlers=[
+                logging.handlers.RotatingFileHandler(
+                    log_file, maxBytes=1024*1024, backupCount=5
+                ),
+                logging.StreamHandler()
+            ],
             level=logging.INFO,
             format='%(asctime)s [%(levelname)s] - %(message)s',
             datefmt='%Y-%m-%d %H:%M:%S'
         )
-        
-        console_handler = logging.StreamHandler(sys.stdout)
-        console_handler.setLevel(logging.INFO)
-        logging.getLogger().addHandler(console_handler)
 
-def save_config(config, restart=False):
-    try:
-        os.makedirs(os.path.dirname(CONFIG_FILE), exist_ok=True)
-        with open(CONFIG_FILE, 'w') as f:
-            json.dump(config, f, indent=4)
-    except Exception as e:
-        raise Exception(f"Fout bij opslaan configuratie: {str(e)}")
-
-def update_sync_status(repo_name, status, error=None):
-    """Update sync status voor een repository"""
+def load_config() -> Dict[str, Any]:
+    """Laad configuratie met error handling"""
     try:
         with open(CONFIG_FILE) as f:
-            config = json.load(f)
+            return json.load(f)
     except FileNotFoundError:
-        config = {}
+        raise Exception(f"Configuration file not found: {CONFIG_FILE}")
+    except json.JSONDecodeError as e:
+        raise Exception(f"Invalid JSON in configuration file: {str(e)}")
 
-    config.setdefault('sync_status', {
-        'last_sync_times': {},
-        'sync_errors': {},
-        'sync_statistics': {}
-    })
-
-    current_time = datetime.now().isoformat()
-    config['sync_status']['last_sync_times'][repo_name] = current_time
-
-    # Update error log indien nodig
-    if error:
-        config['sync_status']['sync_errors'].setdefault(repo_name, []).append({
-            'time': current_time,
-            'error': str(error)
+async def update_sync_status(config: Dict[str, Any], repo_name: str, status: str, error: Exception = None) -> None:
+    """Update sync status asynchroon"""
+    try:
+        config.setdefault('sync_status', {
+            'last_sync_times': {},
+            'sync_errors': {},
+            'sync_statistics': {}
         })
 
-    # Update statistieken
-    stats = config['sync_status']['sync_statistics'].setdefault(repo_name, {
-        'total_syncs': 0,
-        'successful_syncs': 0,
-        'failed_syncs': 0
-    })
+        current_time = datetime.now().isoformat()
+        config['sync_status']['last_sync_times'][repo_name] = current_time
 
-    stats['total_syncs'] += 1
-    if error:
-        stats['failed_syncs'] += 1
-    else:
-        stats['successful_syncs'] += 1
+        if error:
+            config['sync_status']['sync_errors'].setdefault(repo_name, []).append({
+                'time': current_time,
+                'error': str(error)
+            })
 
-    save_config(config, restart=False)
+        stats = config['sync_status']['sync_statistics'].setdefault(repo_name, {
+            'total_syncs': 0,
+            'successful_syncs': 0,
+            'failed_syncs': 0
+        })
 
-def sync_repository(repo, config):
-    """Synchroniseer een enkele repository"""
-    try:
-        result = sync_repositories([repo])
-        
-        # Als we een dictionary terugkrijgen met updates
-        if isinstance(result, dict):
-            if result.get('status') == 'error':
-                # Bij een error in de sync
-                error_msg = result.get('error', 'Unknown error during sync')
-                logging.error(error_msg)
-                update_sync_status(repo['name'], 'error', error_msg)
-                send_notification(config['discord_webhook'], error_msg, "error")
-            elif result.get('updates'):
-                # Bij succesvolle updates
-                update_sync_status(repo['name'], 'success')
-                send_notifications(config['discord_webhook'], result['updates'])
-            else:
-                # Bij succes maar geen updates
-                update_sync_status(repo['name'], 'success')
-                logging.info(f"No updates for {repo['name']}")
+        stats['total_syncs'] += 1
+        if error:
+            stats['failed_syncs'] += 1
         else:
-            # Bij onverwacht resultaat formaat
-            error_msg = f"Unexpected sync result format for {repo['name']}"
-            logging.error(error_msg)
-            update_sync_status(repo['name'], 'error', error_msg)
-            send_notification(config['discord_webhook'], error_msg, "error")
-            
+            stats['successful_syncs'] += 1
+
+        async with aiofiles.open(CONFIG_FILE, 'w') as f:
+            await f.write(json.dumps(config, indent=4))
+
     except Exception as e:
-        error_msg = f"Error syncing {repo['name']}: {str(e)}"
-        logging.error(error_msg)
-        update_sync_status(repo['name'], 'error', e)
-        send_notification(config['discord_webhook'], error_msg, "error")
+        logging.error(f"Error updating sync status: {str(e)}")
 
-def main():
-    """Hoofdfunctie voor de sync service"""
-    os.makedirs('logs', exist_ok=True)
+async def main():
+    """Hoofdfunctie voor de sync service met graceful shutdown"""
+    config = load_config()
+    setup_logging(config['log_file'])
     
-    try:
-        with open(CONFIG_FILE) as f:
-            config = json.load(f)
+    signal.signal(signal.SIGINT, signal_handler)
+    signal.signal(signal.SIGTERM, signal_handler)
 
-        setup_logging(config['log_file'])
-        
-        logging.info("=" * 50)
+    try:
         logging.info("Starting GitHub Auto Pull Service")
-        logging.info(f"Configuration loaded: {len(config['repositories'])} repositories")
-        
-        send_notification(
+        await send_notification(
             config['discord_webhook'],
             f"Service gestart - Monitoring {len(config['repositories'])} repositories",
             "success"
         )
 
-        sync_count = 0
-        last_sync_time = None
-
         while True:
             try:
-                current_time = datetime.now()
-                sync_count += 1
+                result = await sync_repositories(config['repositories'])
                 
-                logging.info(f"Starting sync #{sync_count}")
-                if last_sync_time:
-                    logging.info(f"Time since last sync: {current_time - last_sync_time}")
+                if result['status'] == 'error':
+                    await send_notification(
+                        config['discord_webhook'],
+                        f"Sync error: {result.get('error')}",
+                        "error"
+                    )
+                elif result.get('updates'):
+                    await send_notifications(config['discord_webhook'], result['updates'])
+                
+                await asyncio.sleep(config['sync_interval'])
 
-                # Synchroniseer alle repositories
-                for repo in config['repositories']:
-                    sync_repository(repo, config)
-
-                last_sync_time = current_time
-                logging.info(f"Waiting {config['sync_interval']} seconds until next sync")
-                time.sleep(config['sync_interval'])
-
-            except KeyboardInterrupt:
-                raise
+            except GitError as e:
+                logging.error(f"Git error: {str(e)}")
+                await asyncio.sleep(30)
             except Exception as e:
-                logging.error(f"Error during sync #{sync_count}: {str(e)}", exc_info=True)
-                time.sleep(30)  # Wacht bij error voordat we opnieuw proberen
+                logging.error(f"Unexpected error: {str(e)}")
+                await asyncio.sleep(30)
 
-    except KeyboardInterrupt:
+    except GracefulExit:
         shutdown_msg = "Service shutting down gracefully"
         logging.info(shutdown_msg)
-        send_notification(config['discord_webhook'], shutdown_msg, "warning")
+        await send_notification(config['discord_webhook'], shutdown_msg, "warning")
     except Exception as e:
         fatal_error = f"Critical error in sync service: {str(e)}"
         logging.critical(fatal_error, exc_info=True)
-        send_notification(config['discord_webhook'], fatal_error, "error")
+        await send_notification(config['discord_webhook'], fatal_error, "error")
     finally:
         logging.info("Service stopped")
         logging.shutdown()
 
 if __name__ == "__main__":
-    main()
+    asyncio.run(main())

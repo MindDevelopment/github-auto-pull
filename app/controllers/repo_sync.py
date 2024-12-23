@@ -1,16 +1,20 @@
+import asyncio
 import logging
 import subprocess
 from contextlib import contextmanager
 import os
 from typing import Dict, List, Union, Optional
+from concurrent.futures import ThreadPoolExecutor
+
+class GitError(Exception):
+    """Custom exception voor git-gerelateerde fouten"""
+    pass
 
 @contextmanager
 def temporary_logging_suspension():
     """Tijdelijk uitschakelen van logging handlers om file locks te voorkomen."""
     handlers = logging.root.handlers[:]
     for handler in handlers:
-        if hasattr(handler, 'close'):
-            handler.close()
         logging.root.removeHandler(handler)
     try:
         yield
@@ -18,94 +22,103 @@ def temporary_logging_suspension():
         for handler in handlers:
             logging.root.addHandler(handler)
 
-def execute_git_command(command: List[str], local_path: str) -> str:
+async def execute_git_command(command: List[str], local_path: str) -> str:
     """
-    Voer git commando uit met error handling
-    
-    Returns:
-        str: Command output
-    Raises:
-        subprocess.CalledProcessError: Bij git command fouten
+    Voer git commando asynchroon uit met verbeterde error handling
     """
     try:
-        result = subprocess.run(
-            command,
+        process = await asyncio.create_subprocess_exec(
+            *command,
             cwd=local_path,
-            check=True,
-            capture_output=True,
-            text=True
+            stdout=asyncio.subprocess.PIPE,
+            stderr=asyncio.subprocess.PIPE
         )
-        return result.stdout.strip()
-    except subprocess.CalledProcessError as e:
-        raise Exception(f"Git command failed: {e.stderr}")
+        stdout, stderr = await process.communicate()
+        
+        if process.returncode != 0:
+            raise GitError(f"Git command failed: {stderr.decode()}")
+            
+        return stdout.decode().strip()
+    except Exception as e:
+        raise GitError(f"Error executing git command: {str(e)}")
 
-def get_repository_changes(local_path: str) -> Optional[List[str]]:
+async def get_repository_changes(local_path: str) -> Optional[List[str]]:
     """
-    Controleer repository op wijzigingen
-    
-    Returns:
-        Optional[List[str]]: Lijst van gewijzigde files of None bij geen wijzigingen
+    Controleer repository op wijzigingen asynchroon
     """
     try:
         # Get latest commit hash before pull
-        before_hash = execute_git_command(['git', 'rev-parse', 'HEAD'], local_path)
+        before_hash = await execute_git_command(['git', 'rev-parse', 'HEAD'], local_path)
         
         # Pull changes
-        execute_git_command(['git', 'pull'], local_path)
+        await execute_git_command(['git', 'pull'], local_path)
         
         # Get new commit hash
-        after_hash = execute_git_command(['git', 'rev-parse', 'HEAD'], local_path)
+        after_hash = await execute_git_command(['git', 'rev-parse', 'HEAD'], local_path)
         
-        # Als er wijzigingen zijn, haal de details op
         if before_hash != after_hash:
-            changes = execute_git_command(
+            changes = await execute_git_command(
                 ['git', 'diff', '--name-status', before_hash, after_hash],
                 local_path
             )
             return [f"{line.split()[0]}: {line.split()[1]}" for line in changes.splitlines()]
         return None
+    except GitError as e:
+        logging.error(f"Git error in repository {local_path}: {str(e)}")
+        raise
     except Exception as e:
-        raise Exception(f"Failed to get repository changes: {str(e)}")
+        logging.error(f"Unexpected error in repository {local_path}: {str(e)}")
+        raise
 
-def sync_repositories(repositories: List[Dict]) -> Dict[str, Union[str, List[str]]]:
+async def sync_repositories(repositories: List[Dict]) -> Dict[str, Union[str, List[str]]]:
     """
-    Synchroniseer repositories met verbeterde error handling en status tracking
-    
-    Returns:
-        Dict met status en eventuele updates
+    Synchroniseer repositories asynchroon met rate limiting
     """
     results = {
         'status': 'success',
         'updates': []
     }
+    
+    # Rate limiting semaphore
+    semaphore = asyncio.Semaphore(3)  # Max 3 concurrent syncs
+    
+    async def sync_single_repo(repo):
+        async with semaphore:
+            try:
+                repo_name = repo['name']
+                local_path = repo['local_path']
+                
+                if not os.path.exists(local_path):
+                    raise GitError(f"Repository path does not exist: {local_path}")
 
-    for repo in repositories:
-        repo_name = repo['name']
-        local_path = repo['local_path']
+                with temporary_logging_suspension():
+                    await execute_git_command(['git', 'reset', '--hard', 'HEAD'], local_path)
+                    changes = await get_repository_changes(local_path)
 
-        logging.info(f"Synchronizing repository: {repo_name}")
+                if changes:
+                    return [f"{repo_name}: {change}" for change in changes]
+                return []
+
+            except Exception as e:
+                logging.error(f"Failed to sync {repo['name']}: {str(e)}")
+                raise
+
+    try:
+        # Gebruik asyncio.gather voor parallelle uitvoering
+        tasks = [sync_single_repo(repo) for repo in repositories]
+        repo_results = await asyncio.gather(*tasks, return_exceptions=True)
         
-        try:
-            # Controleer of directory bestaat
-            if not os.path.exists(local_path):
-                raise Exception(f"Repository path does not exist: {local_path}")
+        for result in repo_results:
+            if isinstance(result, Exception):
+                results['status'] = 'error'
+                results['error'] = str(result)
+                break
+            elif result:
+                results['updates'].extend(result)
+                
+        return results
 
-            # Reset lokale wijzigingen
-            with temporary_logging_suspension():
-                execute_git_command(['git', 'reset', '--hard', 'HEAD'], local_path)
-                changes = get_repository_changes(local_path)
-
-            if changes:
-                results['updates'].extend([f"{repo_name}: {change}" for change in changes])
-                logging.info(f"Repository {repo_name} updated successfully")
-            else:
-                logging.info(f"Repository {repo_name} is already up to date")
-
-        except Exception as e:
-            error_msg = f"Failed to sync {repo_name}: {str(e)}"
-            logging.error(error_msg)
-            results['status'] = 'error'
-            results['error'] = error_msg
-            break
-
-    return results
+    except Exception as e:
+        results['status'] = 'error'
+        results['error'] = str(e)
+        return results
