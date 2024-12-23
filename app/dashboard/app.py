@@ -1,8 +1,7 @@
-from flask import Flask, render_template, request, jsonify, redirect, url_for, session, abort, send_from_directory
-import json
+from flask import Flask, render_template, request, jsonify, redirect, url_for, session, abort
+from werkzeug.security import safe_str_cmp  # Voor veilige string vergelijking
 import os
 import logging
-from filelock import FileLock
 from functools import wraps
 from http import HTTPStatus
 from datetime import timedelta
@@ -12,12 +11,21 @@ from dotenv import load_dotenv
 # Load environment variables
 load_dotenv()
 
+# Logging configuration eerst
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+)
+logger = logging.getLogger(__name__)
+
 app = Flask(__name__)
-app.secret_key = os.environ.get('SECRET_KEY', 'your-secret-key-here')
-app.permanent_session_lifetime = timedelta(hours=1)
+app.config.update(
+    SECRET_KEY=os.getenv('SECRET_KEY', 'your-secret-key-here'),
+    PERMANENT_SESSION_LIFETIME=timedelta(hours=1),
+    TEMPLATES_AUTO_RELOAD=True
+)
 
-
-# Update de database initialisatie
+# Database connection in een try-except block
 try:
     db = DatabaseConnection(
         host=os.getenv('DB_HOST', 'localhost'),
@@ -28,13 +36,6 @@ try:
 except Exception as e:
     logger.error(f"Database connection failed: {e}")
     raise
-
-# Logging configuration
-logging.basicConfig(
-    level=logging.INFO,
-    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
-)
-logger = logging.getLogger(__name__)
 
 def admin_required(f):
     @wraps(f)
@@ -59,14 +60,17 @@ def index():
 def login():
     if request.method == 'POST':
         try:
-            if (request.form['username'] == os.environ.get('ADMIN_USERNAME') and 
-                request.form['password'] == os.environ.get('ADMIN_PASSWORD')):
+            # Gebruik safe_str_cmp voor veilige string vergelijking
+            if (safe_str_cmp(request.form.get('username', ''), os.getenv('ADMIN_USERNAME', '')) and 
+                safe_str_cmp(request.form.get('password', ''), os.getenv('ADMIN_PASSWORD', ''))):
                 session.permanent = True
                 session['logged_in'] = True
                 next_page = request.args.get('next') or url_for('admin')
                 return redirect(next_page)
+            logger.warning(f"Failed login attempt for user: {request.form.get('username')}")
             return render_template('login.html', error="Invalid credentials"), HTTPStatus.UNAUTHORIZED
         except Exception as e:
+            logger.error(f"Login error: {str(e)}")
             return render_template('error.html', error=str(e)), HTTPStatus.INTERNAL_SERVER_ERROR
     return render_template('login.html')
 
@@ -82,8 +86,9 @@ def admin():
         repositories = db.get_all_repositories()
         return render_template('admin.html', 
                              repositories=repositories,
-                             webhook=os.environ.get('DISCORD_WEBHOOK'))
+                             webhook=os.getenv('DISCORD_WEBHOOK'))
     except Exception as e:
+        logger.error(f"Admin page error: {str(e)}")
         return render_template('error.html', error=str(e)), HTTPStatus.INTERNAL_SERVER_ERROR
 
 @app.route("/api/repositories", methods=["GET", "POST", "DELETE"])
@@ -91,8 +96,8 @@ def admin():
 def manage_repositories():
     try:
         if request.method == "POST":
-            new_repo = request.json
-            if not all(k in new_repo for k in ['name', 'url', 'local_path']):
+            new_repo = request.get_json()
+            if not new_repo or not all(k in new_repo for k in ['name', 'url', 'local_path']):
                 return jsonify({"error": "Missing required fields"}), HTTPStatus.BAD_REQUEST
             
             repo_id = db.add_repository(
@@ -115,26 +120,38 @@ def manage_repositories():
             return jsonify({"status": "success"})
             
     except Exception as e:
-        logger.error(f"Error in manage_repositories: {str(e)}")
+        logger.error(f"Repository management error: {str(e)}")
         return jsonify({"error": str(e)}), HTTPStatus.INTERNAL_SERVER_ERROR
 
 @app.route("/api/webhook", methods=["PUT"])
 @admin_required
 def update_webhook():
     try:
-        webhook = request.json.get('webhook')
+        webhook_data = request.get_json()
+        webhook = webhook_data.get('webhook') if webhook_data else None
         if not webhook:
             return jsonify({"error": "Webhook URL required"}), HTTPStatus.BAD_REQUEST
         
-        # Update webhook in environment
+        # Update webhook in environment en .env file
         os.environ['DISCORD_WEBHOOK'] = webhook
+        with open('.env', 'r') as f:
+            lines = f.readlines()
+        with open('.env', 'w') as f:
+            updated = False
+            for line in lines:
+                if line.startswith('DISCORD_WEBHOOK='):
+                    f.write(f'DISCORD_WEBHOOK={webhook}\n')
+                    updated = True
+                else:
+                    f.write(line)
+            if not updated:
+                f.write(f'\nDISCORD_WEBHOOK={webhook}\n')
+                
         return jsonify({"status": "success"})
         
     except Exception as e:
-        logger.error(f"Error in update_webhook: {str(e)}")
+        logger.error(f"Webhook update error: {str(e)}")
         return jsonify({"error": str(e)}), HTTPStatus.INTERNAL_SERVER_ERROR
 
 if __name__ == "__main__":
-    app.debug = False
-    app.config['TEMPLATES_AUTO_RELOAD'] = True
     app.run(host="0.0.0.0", port=5000, threaded=True)
