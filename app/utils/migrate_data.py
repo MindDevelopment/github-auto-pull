@@ -2,7 +2,7 @@ import json
 import logging
 from dotenv import load_dotenv
 import os
-from utils.database import DatabaseConnection  # Correct import path
+from database import DatabaseConnection
 
 def migrate_existing_data():
     try:
