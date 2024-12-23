@@ -18,12 +18,16 @@ app.permanent_session_lifetime = timedelta(hours=1)
 
 
 # Update de database initialisatie
-db = DatabaseConnection(
-    host=os.getenv('DB_HOST', 'localhost'),
-    user=os.getenv('DB_USER'),
-    password=os.getenv('DB_PASSWORD'),
-    database=os.getenv('DB_NAME', 'github_auto_pull')
-)
+try:
+    db = DatabaseConnection(
+        host=os.getenv('DB_HOST', 'localhost'),
+        user=os.getenv('DB_USER'),
+        password=os.getenv('DB_PASSWORD'),
+        database=os.getenv('DB_NAME', 'github_auto_pull')
+    )
+except Exception as e:
+    logger.error(f"Database connection failed: {e}")
+    raise
 
 # Logging configuration
 logging.basicConfig(
