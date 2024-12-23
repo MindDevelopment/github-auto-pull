@@ -6,7 +6,7 @@ from filelock import FileLock
 from functools import wraps
 from http import HTTPStatus
 from datetime import timedelta
-from app.utils.database import DatabaseConnection
+from utils.database import DatabaseConnection
 from dotenv import load_dotenv
 
 # Load environment variables
